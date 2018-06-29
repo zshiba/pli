@@ -18,6 +18,8 @@ public class PLI{
     }
     String source = builder.toString();
     System.out.println(source);
+
+    Lexer lexer = new Lexer(source);
   }
 
   public void loop(){
