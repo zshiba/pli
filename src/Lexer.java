@@ -22,11 +22,11 @@ public class Lexer{
       source = "";
 
     Lexer lexer = new Lexer(source);
-    Token token = null;
-    do{
-      token = lexer.getNextToken();
+    Token token = lexer.getNextToken();
+    while(token != null){
       System.out.println(token.toString());
-    }while(token != null);
+      token = lexer.getNextToken();
+    }
   }
 
 }
