@@ -19,6 +19,10 @@ public class Token{
     return this.type;
   }
 
+  public String getLiteral(){
+    return this.literal;
+  }
+
   @Override
   public String toString(){
     return "{type: " + this.type.name() + ", literal: \"" + this.literal + "\"}";
