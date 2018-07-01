@@ -90,10 +90,9 @@ public class Lexer{
 
     Lexer lexer = new Lexer(source);
 
-    Token token = lexer.getNextToken();
-    while(token != null){
+    while(lexer.hasToken()){
+      Token token = lexer.getNextToken();
       System.out.println(token.toString());
-      token = lexer.getNextToken();
     }
   }
 
