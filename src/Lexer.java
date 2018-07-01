@@ -42,8 +42,8 @@ public class Lexer{
   }
 
   private void skip(){
-    for(int peek = this.position; peek < this.source.length(); peek++){
-      char c = this.source.charAt(peek);
+    while(this.position < this.source.length()){
+      char c = this.source.charAt(this.position);
       if(c == ' ' || c == '\t' || c == '\n')
         ++this.position;
       else
