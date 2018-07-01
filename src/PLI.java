@@ -20,6 +20,7 @@ public class PLI{
     System.out.println(source);
 
     Lexer lexer = new Lexer(source);
+    Parser parser = new Parser(lexer);
   }
 
   public void loop(){
