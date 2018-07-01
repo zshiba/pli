@@ -2,6 +2,7 @@ public class Lexer{
 
   private String source;
   private int position;
+  private Token nextToken;
 
   public Lexer(){
     this("");
@@ -10,9 +11,23 @@ public class Lexer{
   public Lexer(String source){
     this.source = source;
     this.position = 0;
+    this.nextToken = this.readToken();
   }
 
   public Token getNextToken(){
+    Token token = this.nextToken;
+    this.nextToken = this.readToken();
+    return token;
+  }
+
+  public boolean hasToken(){
+    if(this.nextToken != null)
+      return true;
+    else
+      return false;
+  }
+
+  private Token readToken(){
     this.skip();
     Token token = null;
     if(this.position < this.source.length()){
