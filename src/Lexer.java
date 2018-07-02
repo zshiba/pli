@@ -81,6 +81,7 @@ public class Lexer{
     return builder.toString();
   }
 
+  //for test
   public static void main(String[] args){
     String source;
     if(args.length > 0)
