@@ -14,10 +14,14 @@ public class Lexer{
     this.nextToken = this.readToken();
   }
 
-  public Token getNextToken(){
+  public Token consumeNextToken(){
     Token token = this.nextToken;
     this.nextToken = this.readToken();
     return token;
+  }
+
+  public Token peekNextToken(){
+    return this.nextToken;
   }
 
   public boolean hasToken(){
@@ -92,7 +96,7 @@ public class Lexer{
     Lexer lexer = new Lexer(source);
 
     while(lexer.hasToken()){
-      Token token = lexer.getNextToken();
+      Token token = lexer.consumeNextToken();
       System.out.println(token.toString());
     }
   }
