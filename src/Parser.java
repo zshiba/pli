@@ -2,20 +2,20 @@ import java.util.ArrayList;
 
 public class Parser{
 
-  private static class ParseErrorException extends Exception{
+  public static class ParseErrorException extends Exception{
 
-    boolean isOfCloseParenthesis;
+    private boolean isOfCloseParenthesis;
 
-    ParseErrorException(String message){
+    public ParseErrorException(String message){
       this(message, false);
     }
 
-    ParseErrorException(String message, boolean isOfCloseParenthesis){
+    public ParseErrorException(String message, boolean isOfCloseParenthesis){
       super("parse error: " + message);
       this.isOfCloseParenthesis = isOfCloseParenthesis;
     }
 
-    boolean isOfCloseParenthesis(){
+    public boolean isOfCloseParenthesis(){
       return this.isOfCloseParenthesis;
     }
 
