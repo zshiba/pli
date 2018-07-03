@@ -1,13 +1,13 @@
-public class ConsCell implements SExpression{
+public class Cell implements SExpression{
 
   private SExpression car;
   private SExpression cdr;
 
-  public ConsCell(SExpression car){
+  public Cell(SExpression car){
     this(car, Atom.NIL);
   }
 
-  public ConsCell(SExpression car, SExpression cdr){
+  public Cell(SExpression car, SExpression cdr){
     this.car = car;
     this.cdr = cdr;
   }
