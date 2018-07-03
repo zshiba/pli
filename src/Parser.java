@@ -58,7 +58,7 @@ public class Parser{
               throw e;
           }
           leaf.cdr(new Cell(cdr));
-          leaf = (Cell) leaf.cdr();
+          leaf = (Cell)leaf.cdr(); //ad-hoc (safe cast only within this context)
         }
         throw new ParseErrorException("(missing ')')");
       }else if(type == Token.Type.CLOSE_PARENTHESIS){
