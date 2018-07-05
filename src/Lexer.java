@@ -4,10 +4,6 @@ public class Lexer{
   private int position;
   private Token nextToken;
 
-  public Lexer(){
-    this("");
-  }
-
   public Lexer(String source){
     this.source = source;
     this.position = 0;

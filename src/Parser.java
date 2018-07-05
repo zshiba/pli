@@ -23,10 +23,6 @@ public class Parser{
 
   private Lexer lexer;
 
-  public Parser(){
-    this(new Lexer());
-  }
-
   public Parser(Lexer lexer){
     this.lexer = lexer;
   }
