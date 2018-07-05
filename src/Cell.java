@@ -4,7 +4,7 @@ public class Cell implements SExpression{
   private SExpression cdr;
 
   public Cell(){
-    this(null, null);
+    this(null, null); //to represent empty list
   }
 
   public Cell(SExpression car){
