@@ -39,7 +39,9 @@ public class PLI{
   }
 
   private String eval(SExpression expression){
-    return ""; //ToDo
+    Evaluator evaluator = new Evaluator(this.environment);
+    String value = evaluator.evaluate(expression);
+    return value;
   }
 
   private void print(String prompt, String value){
