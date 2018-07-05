@@ -16,12 +16,16 @@ public class Cell implements SExpression{
     this.cdr = cdr;
   }
 
-  public void cdr(SExpression expression){
-    this.cdr = expression;
+  public SExpression car(){
+    return this.car;
   }
 
   public SExpression cdr(){
     return this.cdr;
+  }
+
+  public void cdr(SExpression expression){
+    this.cdr = expression;
   }
 
   @Override
