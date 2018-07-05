@@ -38,7 +38,7 @@ public class PLI{
     return expressions;
   }
 
-  private String evaluate(SExpression expression){
+  private String eval(SExpression expression){
     return ""; //ToDo
   }
 
@@ -54,7 +54,7 @@ public class PLI{
           System.out.print(INPUT_PROMPT);
           ArrayList<SExpression> expressions = this.read(in);
           for(SExpression expression : expressions){
-            String value = this.evaluate(expression);
+            String value = this.eval(expression);
             this.print(OUTPUT_PROMPT, value);
           }
         }catch(Parser.ParseErrorException pe){
