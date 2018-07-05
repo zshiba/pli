@@ -1,6 +1,6 @@
 public class Atom implements SExpression{
 
-  public static final Atom NIL = new Atom("NIL");
+  public static final Atom NIL = new Atom("nil");
 
   private String symbol;
 
