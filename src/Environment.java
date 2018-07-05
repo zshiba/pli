@@ -88,4 +88,19 @@ public class Environment{
     return isBound;
   }
 
+  public SExpression find(Atom key){
+    PairNode node = this.head;
+    while(node != null){
+      if(node.key().equals(key))
+        break;
+      node = node.next();
+    }
+    if(node != null)
+      return node.value();
+    else if(this.outer != null)
+      return this.outer.find(key);
+    else
+      return null;
+  }
+
 }
