@@ -52,11 +52,15 @@ public class Environment{
     this.head = null;
   }
 
+  public void register(Atom key, SExpression value){
+    this.bind(key, value, true);
+  }
+
   public boolean bind(Atom key, SExpression value){
     return this.bind(key, value, false);
   }
 
-  public boolean bind(Atom key, SExpression value, boolean isPrimitive){
+  private boolean bind(Atom key, SExpression value, boolean isPrimitive){
     boolean isBound = false;
     PairNode newbie = new PairNode(key, value, isPrimitive);
 
