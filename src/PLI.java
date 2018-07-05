@@ -30,7 +30,7 @@ public class PLI{
       builder.append((char) c);
     }
     String source = builder.toString();
-    System.out.println(source);
+System.out.println(source);
 
     Lexer lexer = new Lexer(source);
     Parser parser = new Parser(lexer);
@@ -38,15 +38,14 @@ public class PLI{
     return expressions;
   }
 
-  private String eval(SExpression expression){
-    Evaluator evaluator = new Evaluator(this.environment);
-    String value = evaluator.evaluate(expression);
+  private SExpression eval(SExpression expression){
+    Evaluator evaluator = new Evaluator();
+    SExpression value = evaluator.evaluate(expression, this.environment);
     return value;
   }
 
-  private void print(String prompt, String value){
-    System.out.print(prompt);
-    System.out.println(value);
+  private void print(SExpression value){
+    System.out.println(value.toString());
   }
 
   public void loop(){
@@ -56,11 +55,13 @@ public class PLI{
           System.out.print(INPUT_PROMPT);
           ArrayList<SExpression> expressions = this.read(in);
           for(SExpression expression : expressions){
-            String value = this.eval(expression);
-            this.print(OUTPUT_PROMPT, value);
+            SExpression value = this.eval(expression);
+            System.out.print(OUTPUT_PROMPT);
+            this.print(value);
           }
         }catch(Parser.ParseErrorException pe){
-          this.print(ERROR_PROMPT, pe.getMessage());
+          System.out.print(ERROR_PROMPT);
+          System.out.println(pe.getMessage());
         }
       }
     }catch(IOException e){
