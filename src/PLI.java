@@ -30,7 +30,6 @@ public class PLI{
       builder.append((char) c);
     }
     String source = builder.toString();
-System.out.println(source);
 
     Lexer lexer = new Lexer(source);
     Parser parser = new Parser(lexer);
