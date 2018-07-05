@@ -22,7 +22,6 @@ public class PLI{
   }
 
   private ArrayList<SExpression> read(BufferedReader in) throws IOException, Parser.ParseErrorException{
-    System.out.print(INPUT_PROMPT);
     StringBuilder builder = new StringBuilder();
     int c;
     while((c = in.read()) != -1){
@@ -50,6 +49,7 @@ public class PLI{
     try(BufferedReader in = new BufferedReader(new InputStreamReader(System.in));){
       while(true){
         try{
+          System.out.print(INPUT_PROMPT);
           ArrayList<SExpression> expressions = this.read(in);
           for(SExpression expression : expressions){
             String value = this.evaluate(expression);
