@@ -9,7 +9,16 @@ public class PLI{
   private static final String OUTPUT_PROMPT = "=> ";
   private static final String ERROR_PROMPT  = "** ";
 
+  private Environment environment;
+
   public PLI(){
+    this.environment = this.createTopLevelEnvironment();
+  }
+
+  private Environment createTopLevelEnvironment(){
+    Environment environment = new Environment();
+    //ToDo
+    return environment;
   }
 
   private ArrayList<SExpression> read(BufferedReader in) throws IOException, Parser.ParseErrorException{
