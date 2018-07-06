@@ -66,6 +66,7 @@ public class PLI{
         }catch(Parser.ParseErrorException | Evaluator.EvaluationErrorException ex){
           System.out.print(ERROR_PROMPT);
           System.out.println(ex.getMessage());
+          System.out.println();
         }
       }
     }catch(IOException e){
