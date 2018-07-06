@@ -41,7 +41,7 @@ public class PLI{
     return expressions;
   }
 
-  private SExpression eval(SExpression expression){
+  private SExpression eval(SExpression expression) throws Evaluator.EvaluationErrorException{
     Evaluator evaluator = new Evaluator();
     SExpression value = evaluator.evaluate(expression, this.environment);
     return value;
@@ -63,9 +63,9 @@ public class PLI{
             System.out.print(OUTPUT_PROMPT);
             this.print(value);
           }
-        }catch(Parser.ParseErrorException pe){
+        }catch(Parser.ParseErrorException | Evaluator.EvaluationErrorException ex){
           System.out.print(ERROR_PROMPT);
-          System.out.println(pe.getMessage());
+          System.out.println(ex.getMessage());
         }
       }
     }catch(IOException e){
