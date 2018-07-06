@@ -28,16 +28,23 @@ public class Cell implements SExpression{
     this.cdr = expression;
   }
 
+  public boolean isEmpty(){
+    if(this.car == null && this.cdr == null)
+      return true;
+    else
+      return false;
+  }
+
   @Override
   public String toString(){
-    String s = "";
-    if(this.car == null){
+    String s;
+    if(this.isEmpty()){
       s = "()";
     }else{
       if(this.cdr == Atom.NIL){
         s = this.car.toString();
       }else{
-        s += "(";
+        s = "(";
         s += this.car.toString();
         s += " ";
         s += this.cdr.toString();
@@ -49,13 +56,16 @@ public class Cell implements SExpression{
 
   @Override
   public String toFullString(){
-    String s = "(";
-    if(this.car != null){
+    String s;
+    if(this.isEmpty()){
+      s = "()";
+    }else{
+      s = "(";
       s += this.car.toFullString();
       s += " . ";
       s += this.cdr.toFullString();
+      s += ")";
     }
-    s += ")";
     return s;
   }
 
