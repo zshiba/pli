@@ -1,7 +1,14 @@
 public class Atom implements SExpression{
 
-  public static final Atom NIL  = new Atom("nil");
-  public static final Atom TRUE = new Atom("t");
+  //constant literal
+  public static final Atom NIL    = new Atom("nil");
+  public static final Atom TRUE   = new Atom("t");
+
+  //literal for special form
+  public static final Atom QUOTE  = new Atom("quote");
+  public static final Atom DEFINE = new Atom("define");
+  public static final Atom COND   = new Atom("cond");
+  public static final Atom LAMBDA = new Atom("lambda");
 
   private String symbol;
 
