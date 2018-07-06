@@ -52,8 +52,8 @@ public class Environment{
     this.head = null;
   }
 
-  public void register(Atom key, SExpression value){
-    this.bind(key, value, true);
+  public void register(Atom symbol){
+    this.bind(symbol, symbol, true);
   }
 
   public boolean bind(Atom key, SExpression value){
