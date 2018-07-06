@@ -49,6 +49,7 @@ public class PLI{
 
   private void print(SExpression value){
     System.out.println(value.toString());
+    System.out.println();
   }
 
   public void loop(){
