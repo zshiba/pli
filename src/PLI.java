@@ -17,8 +17,12 @@ public class PLI{
 
   private Environment createTopLevelEnvironment(){
     Environment environment = new Environment();
-    environment.register(Atom.NIL, Atom.NIL);
-    environment.register(Atom.TRUE, Atom.TRUE);
+    environment.register(Atom.NIL);
+    environment.register(Atom.TRUE);
+    environment.register(Atom.QUOTE);
+    environment.register(Atom.DEFINE);
+    environment.register(Atom.COND);
+    environment.register(Atom.LAMBDA);
     //ToDo
     return environment;
   }
