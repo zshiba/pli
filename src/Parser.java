@@ -93,9 +93,8 @@ public class Parser{
     try{
       ArrayList<SExpression> expressions = parser.parse();
       for(SExpression expression : expressions)
-        System.out.println(expression.toString());
+        System.out.println(expression.toFullString());
     }catch(ParseErrorException e){
-e.printStackTrace();
       System.err.println(e.getMessage());
     }
   }
