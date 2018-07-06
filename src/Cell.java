@@ -30,11 +30,30 @@ public class Cell implements SExpression{
 
   @Override
   public String toString(){
+    String s = "";
+    if(this.car == null){
+      s = "()";
+    }else{
+      if(this.cdr == Atom.NIL){
+        s = this.car.toString();
+      }else{
+        s += "(";
+        s += this.car.toString();
+        s += " ";
+        s += this.cdr.toString();
+        s += ")";
+      }
+    }
+    return s;
+  }
+
+  @Override
+  public String toFullString(){
     String s = "(";
     if(this.car != null){
-      s += this.car.toString();
+      s += this.car.toFullString();
       s += " . ";
-      s += this.cdr.toString();
+      s += this.cdr.toFullString();
     }
     s += ")";
     return s;

@@ -29,4 +29,9 @@ public class Atom implements SExpression{
     return this.symbol;
   }
 
+  @Override
+  public String toFullString(){
+    return this.toString();
+  }
+
 }
