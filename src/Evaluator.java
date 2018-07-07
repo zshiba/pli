@@ -28,8 +28,10 @@ public class Evaluator{
 
         if(car.equals(Atom.QUOTE)){
           return this.quote(cdr);
+        }else if(car.equals(Atom.DEFINE)){
+          return this.define(cdr, environment);
         }else{
-          return null;
+          return null; //ToDo
         }
       }
     }else{
@@ -44,7 +46,29 @@ public class Evaluator{
       if(cell.cdr() == Atom.NIL)
         return cell.car();
       else
-        throw new EvaluationErrorException("Invalid expression: " + expression.toFullString());
+        throw new EvaluationErrorException("Invalid expression: " + cell.cdr().toFullString());
+    }else{
+      throw new EvaluationErrorException("Invalid expression: " + expression.toFullString());
+    }
+  }
+
+  //special form: (define atom s-expression)
+  private SExpression define(SExpression expression, Environment environment) throws EvaluationErrorException{
+    if(expression instanceof Cell){
+      Cell cell = (Cell)expression;
+      SExpression car = cell.car();
+      SExpression cdr = cell.cdr();
+      if(car instanceof Atom){
+        Atom key = (Atom)car;
+        SExpression value = this.evaluate(((Cell)cdr).car(), environment);
+        boolean isBound = environment.bind(key, value);
+        if(isBound)
+          return car;
+        else
+          throw new EvaluationErrorException("Binding failure: " + key.toFullString());
+      }else{
+        throw new EvaluationErrorException("Invalid expression: " + car.toFullString());
+      }
     }else{
       throw new EvaluationErrorException("Invalid expression: " + expression.toFullString());
     }
