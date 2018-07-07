@@ -30,6 +30,8 @@ public class Evaluator{
           return this.quote(cdr);
         }else if(car.equals(Atom.DEFINE)){
           return this.define(cdr, environment);
+        }else if(car.equals(Atom.LAMBDA)){
+          return this.lambda(cdr, environment);
         }else{
           return null; //ToDo
         }
@@ -39,7 +41,7 @@ public class Evaluator{
     }
   }
 
-  //special form: (quote s-expression)
+  //special form: (quote value::s-expression)
   private SExpression quote(SExpression expression) throws EvaluationErrorException{
     if(expression instanceof Cell){
       Cell cell = (Cell)expression;
@@ -52,7 +54,7 @@ public class Evaluator{
     }
   }
 
-  //special form: (define atom s-expression)
+  //special form: (define key::atom value::s-expression)
   private SExpression define(SExpression expression, Environment environment) throws EvaluationErrorException{
     if(expression instanceof Cell){
       Cell cell = (Cell)expression;
@@ -66,6 +68,33 @@ public class Evaluator{
           return car;
         else
           throw new EvaluationErrorException("Binding failure: " + key.toFullString());
+      }else{
+        throw new EvaluationErrorException("Invalid expression: " + car.toFullString());
+      }
+    }else{
+      throw new EvaluationErrorException("Invalid expression: " + expression.toFullString());
+    }
+  }
+
+  //special form: (lambda (argument::atom...) body::s-expression)
+  private SExpression lambda(SExpression expression, Environment environment) throws EvaluationErrorException{
+    if(expression instanceof Cell){
+      Cell cell = (Cell)expression;
+      SExpression car = cell.car();
+      SExpression cdr = cell.cdr();
+      if(car instanceof Cell){
+        Cell argument = (Cell)car;
+        while(true){
+          if((argument.car() instanceof Atom) && (argument.cdr() == Atom.NIL))
+            break;
+          else if(!(argument.car() instanceof Atom))
+            throw new EvaluationErrorException("Invalid expression: " + argument.car().toFullString());
+          else if(!(argument.cdr() instanceof Cell))
+            throw new EvaluationErrorException("Invalid expression: " + argument.cdr().toFullString());
+          else
+            argument = (Cell)argument.cdr();
+        }
+        return new Procedure(car, cdr, environment);
       }else{
         throw new EvaluationErrorException("Invalid expression: " + car.toFullString());
       }
