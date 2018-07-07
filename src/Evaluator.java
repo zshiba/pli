@@ -32,6 +32,8 @@ public class Evaluator{
           return this.define(cdr, environment);
         }else if(car.equals(Atom.LAMBDA)){
           return this.lambda(cdr, environment);
+        }else if(car.equals(Atom.COND)){
+          return this.cond(cdr, environment);
         }else{
           return null; //ToDo
         }
@@ -97,6 +99,33 @@ public class Evaluator{
         return new Procedure(car, cdr, environment);
       }else{
         throw new EvaluationErrorException("Invalid expression: " + car.toFullString());
+      }
+    }else{
+      throw new EvaluationErrorException("Invalid expression: " + expression.toFullString());
+    }
+  }
+
+  //special form: (cond ((predicate::s-expression then-body::s-expression)...))
+  private SExpression cond(SExpression expression, Environment environment) throws EvaluationErrorException{
+    if(expression instanceof Cell){
+      Cell cell = (Cell)((Cell)expression).car(); //ToDo need check for safe cast
+      while(true){
+        SExpression clause = cell.car();
+        if(clause instanceof Cell){
+          SExpression predicate = ((Cell)clause).car();
+          SExpression body = ((Cell)((Cell)clause).cdr()).car(); //ToDo need check for safe cast
+          SExpression result = this.evaluate(predicate, environment);
+          if(result == Atom.TRUE){
+            return this.evaluate(body, environment);
+          }else{
+            if(cell.cdr() instanceof Cell)
+              cell = (Cell)cell.cdr();
+            else
+              throw new EvaluationErrorException("Invalid expression: " + cell.cdr().toFullString());
+          }
+        }else{
+          throw new EvaluationErrorException("Invalid expression: " + clause.toFullString());
+        }
       }
     }else{
       throw new EvaluationErrorException("Invalid expression: " + expression.toFullString());
