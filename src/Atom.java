@@ -9,7 +9,7 @@ public class Atom implements SExpression{
   public static final Atom DEFINE = new Atom("define");
   public static final Atom COND   = new Atom("cond");
   public static final Atom LAMBDA = new Atom("lambda");
-
+  
   private String symbol;
 
   public Atom(String symbol){
@@ -18,10 +18,16 @@ public class Atom implements SExpression{
 
   @Override
   public boolean equals(Object object){
-    if(object instanceof Atom)
+    if(object instanceof Atom){
       return this.toString().equals(object.toString());
-    else
+    }else if(object instanceof Cell){
+      if(this.equals(Atom.NIL) && ((Cell)object).isEmpty())
+        return true;
+      else
+        return false;
+    }else{
       return false;
+    }
   }
 
   @Override

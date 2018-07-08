@@ -11,6 +11,11 @@ public class Procedure implements SExpression{
   }
 
   @Override
+  public boolean equals(Object object){
+    return false; //ToDo
+  }
+
+  @Override
   public String toString(){
     return "(procedure)";
   }

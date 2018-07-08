@@ -36,6 +36,28 @@ public class Cell implements SExpression{
   }
 
   @Override
+  public boolean equals(Object object){
+    if(object instanceof Cell){
+      Cell other = (Cell)object;
+      if(this.isEmpty() && other.isEmpty()){
+        return true;
+      }else{
+        if((this.car.equals(other.car())) && (this.cdr.equals(other.cdr())))
+          return true;
+        else
+          return false;
+      }
+    }else if(object instanceof Atom){
+      if(this.isEmpty() && object.equals(Atom.NIL))
+        return true;
+      else
+        return false;
+    }else{
+      return false;
+    }
+  }
+
+  @Override
   public String toString(){
     String s;
     if(this.isEmpty()){
