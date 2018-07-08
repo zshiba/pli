@@ -34,6 +34,8 @@ public class Evaluator{
           return this.lambda(cdr, environment);
         }else if(car.equals(Atom.COND)){
           return this.cond(cdr, environment);
+        }else if(car.equals(Atom.EQ)){
+          return this.eq(cdr, environment);
         }else{
           return null; //ToDo
         }
@@ -126,6 +128,46 @@ public class Evaluator{
         }else{
           throw new EvaluationErrorException("Invalid expression: " + clause.toFullString());
         }
+      }
+    }else{
+      throw new EvaluationErrorException("Invalid expression: " + expression.toFullString());
+    }
+  }
+
+  //primitive: (eq symbol1::atom symbol2::atom)
+  private SExpression eq(SExpression expression, Environment environment) throws EvaluationErrorException{
+    if(expression instanceof Cell){
+      Cell cell = (Cell)expression;
+      SExpression expression1 = cell.car();
+      SExpression right = cell.cdr();
+      if(right instanceof Cell){
+        if(((Cell)right).cdr() == Atom.NIL){
+          SExpression expression2 = ((Cell)right).car();
+          if(expression1 instanceof Atom){
+            if(environment.find((Atom)expression1) != null){
+              if(expression2 instanceof Atom){
+                if(environment.find((Atom)expression2) != null){
+                  if(expression1.equals(expression2))
+                    return Atom.TRUE;
+                  else
+                    return Atom.NIL;
+                }else{
+                  throw new EvaluationErrorException("Invalid expression: " + expression2.toFullString());
+                }
+              }else{
+                throw new EvaluationErrorException("Invalid expression: " + expression2.toFullString());
+              }
+            }else{
+              throw new EvaluationErrorException("Invalid expression: " + expression1.toFullString());
+            }
+          }else{
+            throw new EvaluationErrorException("Invalid expression: " + expression1.toFullString());
+          }
+        }else{
+          throw new EvaluationErrorException("Invalid expression: " + ((Cell)right).cdr().toFullString());
+        }
+      }else{
+        throw new EvaluationErrorException("Invalid expression: " + right.toFullString());
       }
     }else{
       throw new EvaluationErrorException("Invalid expression: " + expression.toFullString());

@@ -9,7 +9,10 @@ public class Atom implements SExpression{
   public static final Atom DEFINE = new Atom("define");
   public static final Atom COND   = new Atom("cond");
   public static final Atom LAMBDA = new Atom("lambda");
-  
+
+  //literal for primitive function
+  public static final Atom EQ     = new Atom("eq");
+
   private String symbol;
 
   public Atom(String symbol){

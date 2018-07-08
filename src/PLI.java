@@ -23,6 +23,7 @@ public class PLI{
     environment.register(Atom.DEFINE);
     environment.register(Atom.COND);
     environment.register(Atom.LAMBDA);
+    environment.register(Atom.EQ);
     //ToDo
     return environment;
   }
