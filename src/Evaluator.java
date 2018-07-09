@@ -36,6 +36,8 @@ public class Evaluator{
           return this.cond(cdr, environment);
         }else if(car.equals(Atom.EQ)){
           return this.eq(cdr, environment);
+        }else if(car.equals(Atom.ATOM)){
+          return this.atom(cdr, environment);
         }else{
           return null; //ToDo
         }
@@ -134,7 +136,7 @@ public class Evaluator{
     }
   }
 
-  //primitive: (eq symbol1::atom symbol2::atom)
+  //primitive: (eq symbol1::s-expression symbol2::s-expression)
   private SExpression eq(SExpression expression, Environment environment) throws EvaluationErrorException{
     if(expression instanceof Cell){
       Cell cell = (Cell)expression;
@@ -168,6 +170,29 @@ public class Evaluator{
         }
       }else{
         throw new EvaluationErrorException("Invalid expression: " + right.toFullString());
+      }
+    }else{
+      throw new EvaluationErrorException("Invalid expression: " + expression.toFullString());
+    }
+  }
+
+  //primitive: (atom symbol::s-expression)
+  private SExpression atom(SExpression expression, Environment environment) throws EvaluationErrorException{
+    if(expression instanceof Cell){
+      Cell cell = (Cell)expression;
+      SExpression car = cell.car();
+      SExpression cdr = cell.cdr();
+      if(cdr == Atom.NIL){
+        if(car instanceof Atom){
+          if(environment.find((Atom)car) != null)
+            return Atom.TRUE;
+          else
+            throw new EvaluationErrorException("Invalid expression: " + car.toFullString());
+        }else{
+          return Atom.NIL;
+        }
+      }else{
+        throw new EvaluationErrorException("Invalid expression: " + cdr.toFullString());
       }
     }else{
       throw new EvaluationErrorException("Invalid expression: " + expression.toFullString());

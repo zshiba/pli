@@ -12,6 +12,7 @@ public class Atom implements SExpression{
 
   //literal for primitive function
   public static final Atom EQ     = new Atom("eq");
+  public static final Atom ATOM   = new Atom("atom");
 
   private String symbol;
 
