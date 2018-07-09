@@ -151,26 +151,12 @@ public class Evaluator{
       if(right instanceof Cell){
         if(((Cell)right).cdr() == Atom.NIL){
           SExpression expression2 = ((Cell)right).car();
-          if(expression1 instanceof Atom){
-            if(environment.find((Atom)expression1) != null){
-              if(expression2 instanceof Atom){
-                if(environment.find((Atom)expression2) != null){
-                  if(expression1.equals(expression2))
-                    return Atom.TRUE;
-                  else
-                    return Atom.NIL;
-                }else{
-                  throw new EvaluationErrorException("Invalid expression: " + expression2.toFullString());
-                }
-              }else{
-                throw new EvaluationErrorException("Invalid expression: " + expression2.toFullString());
-              }
-            }else{
-              throw new EvaluationErrorException("Invalid expression: " + expression1.toFullString());
-            }
-          }else{
-            throw new EvaluationErrorException("Invalid expression: " + expression1.toFullString());
-          }
+          expression1 = this.evaluate(expression1, environment);
+          expression2 = this.evaluate(expression2, environment);
+          if(expression1.equals(expression2))
+            return Atom.TRUE;
+          else
+            return Atom.NIL;
         }else{
           throw new EvaluationErrorException("Invalid expression: " + ((Cell)right).cdr().toFullString());
         }
