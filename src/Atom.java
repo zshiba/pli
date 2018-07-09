@@ -15,6 +15,7 @@ public class Atom implements SExpression{
   public static final Atom ATOM   = new Atom("atom");
   public static final Atom CONS   = new Atom("cons");
   public static final Atom CAR    = new Atom("car");
+  public static final Atom CDR    = new Atom("cdr");
 
   private String symbol;
 
