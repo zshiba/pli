@@ -1,11 +1,11 @@
 public class Procedure implements SExpression{
 
-  private SExpression arguments;
+  private SExpression parameters;
   private SExpression body;
   private Environment environment;
 
-  public Procedure(SExpression arguments, SExpression body, Environment environment){
-    this.arguments = arguments;
+  public Procedure(SExpression parameters, SExpression body, Environment environment){
+    this.parameters = parameters;
     this.body = body;
     this.environment = environment;
   }
