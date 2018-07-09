@@ -38,6 +38,8 @@ public class Evaluator{
           return this.eq(cdr, environment);
         }else if(car.equals(Atom.ATOM)){
           return this.atom(cdr, environment);
+        }else if(car.equals(Atom.CONS)){
+          return this.cons(cdr, environment);
         }else{
           return null; //ToDo
         }
@@ -193,6 +195,28 @@ public class Evaluator{
         }
       }else{
         throw new EvaluationErrorException("Invalid expression: " + cdr.toFullString());
+      }
+    }else{
+      throw new EvaluationErrorException("Invalid expression: " + expression.toFullString());
+    }
+  }
+
+
+  //primitive: (cons expression1::s-expression expression2::s-expression)
+  private SExpression cons(SExpression expression, Environment environment) throws EvaluationErrorException{
+    if(expression instanceof Cell){
+      Cell cell = (Cell)expression;
+      SExpression expression1 = cell.car();
+      SExpression right = cell.cdr();
+      if(right instanceof Cell){
+        if(((Cell)right).cdr() == Atom.NIL){
+          SExpression expression2 = ((Cell)right).car();
+          return new Cell(this.evaluate(expression1, environment), this.evaluate(expression2, environment));
+        }else{
+          throw new EvaluationErrorException("Invalid expression: " + ((Cell)right).cdr().toFullString());
+        }
+      }else{
+        throw new EvaluationErrorException("Invalid expression: " + right.toFullString());
       }
     }else{
       throw new EvaluationErrorException("Invalid expression: " + expression.toFullString());
