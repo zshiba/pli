@@ -59,20 +59,15 @@ public class Cell implements SExpression{
 
   @Override
   public String toString(){
-    String s;
-    if(this.isEmpty()){
-      s = "()";
-    }else{
-      if(this.cdr == Atom.NIL){
-        s = this.car.toString();
-      }else{
-        s = "(";
-        s += this.car.toString();
+    String s = "(";
+    if(!this.isEmpty()){
+      s += this.car.toString();
+      if(this.cdr != Atom.NIL){
         s += " ";
         s += this.cdr.toString();
-        s += ")";
       }
     }
+    s += ")";
     return s;
   }
 
