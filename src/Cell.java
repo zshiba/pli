@@ -58,20 +58,6 @@ public class Cell implements SExpression{
   }
 
   @Override
-  public String toString(){
-    String s = "(";
-    if(!this.isEmpty()){
-      s += this.car.toString();
-      if(this.cdr != Atom.NIL){
-        s += " ";
-        s += this.cdr.toString();
-      }
-    }
-    s += ")";
-    return s;
-  }
-
-  @Override
   public String toFullString(){
     String s;
     if(this.isEmpty()){
