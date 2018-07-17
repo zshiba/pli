@@ -45,7 +45,7 @@ public class Evaluator{
         }else if(car.equals(Atom.CDR)){
           return this.cdr(cdr, environment);
         }else{
-          return null; //ToDo
+          return this.apply(expression, environment);
         }
       }
     }else{
@@ -260,6 +260,64 @@ public class Evaluator{
       }
     }else{
       throw new EvaluationErrorException("Invalid expression: " + expression.toFullString());
+    }
+  }
+
+  private SExpression apply(SExpression expression, Environment environment) throws EvaluationErrorException{
+    if(expression instanceof Cell){
+      Cell cell = (Cell)expression;
+      SExpression car = cell.car();
+      SExpression cdr = cell.cdr();
+      SExpression procedure = this.evaluate(car, environment);
+      if(procedure instanceof Procedure){
+        SExpression parameters = ((Procedure)procedure).getParameters();
+        SExpression body = ((Procedure)procedure).getBody();
+        Environment env = ((Procedure)procedure).getEnvironment();
+
+        //evaluate arguments with environment
+        SExpression arguments = null;
+        SExpression argument = cdr;
+        while(true){
+          if(argument == Atom.NIL){
+            break;
+          }else if(!(argument instanceof Cell)){
+            throw new EvaluationErrorException("Invalid expression: " + argument.toFullString());
+          }else{
+            Cell newbie = new Cell(this.evaluate(((Cell)argument).car(), environment));
+            if(arguments == null)
+              arguments = newbie;
+            else
+              ((Cell)argument).cdr(newbie); //ad-hoc safe cast only within this context
+            argument = ((Cell)argument).cdr();
+          }
+        }
+        //create new local environment; bind parameters and evaluated_arguments
+        Environment local = new Environment(env);
+        SExpression parameter = ((Cell)parameters).car();    //ToDo
+        SExpression arg = ((Cell)arguments).car();           //ToDo
+        while(parameter != Atom.NIL && arg != Atom.NIL){     //ToDo
+          local.bind((Atom)parameter, arg);                  //ToDo
+          if(parameter instanceof Atom || arg instanceof Atom)
+            break;
+          parameter = ((Cell)((Cell)parameter).cdr()).car(); //ToDo
+          arg = ((Cell)((Cell)arg).cdr()).car();             //ToDo
+        }
+        //evaluate body with the new local environment
+        SExpression value = null;
+        SExpression b = ((Cell)body);
+        while(b != Atom.NIL){
+          value = this.evaluate(((Cell)b).car(), local);
+          if(b instanceof Atom)
+            break;
+          b = ((Cell)b).cdr();
+        }
+        return value;
+      }else{
+        System.out.println(procedure);
+        throw new EvaluationErrorException("aaa Invalid expression: " + procedure.toFullString());
+      }
+    }else{
+      throw new EvaluationErrorException("bbb Invalid expression: " + expression.toFullString());
     }
   }
 
