@@ -59,16 +59,13 @@ public class List implements SExpression{
 
   @Override
   public String toFullString(){
-    String s;
-    if(this.isEmpty()){
-      s = "()";
-    }else{
-      s = "(";
+    String s = "(";
+    if(!this.isEmpty()){
       s += this.car.toFullString();
       s += " . ";
       s += this.cdr.toFullString();
-      s += ")";
     }
+    s += ")";
     return s;
   }
 
