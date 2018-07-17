@@ -1,17 +1,17 @@
-public class Cell implements SExpression{
+public class List implements SExpression{
 
   private SExpression car;
   private SExpression cdr;
 
-  public Cell(){
+  public List(){
     this(null, null); //to represent empty list
   }
 
-  public Cell(SExpression car){
+  public List(SExpression car){
     this(car, Atom.NIL);
   }
 
-  public Cell(SExpression car, SExpression cdr){
+  public List(SExpression car, SExpression cdr){
     this.car = car;
     this.cdr = cdr;
   }
@@ -37,8 +37,8 @@ public class Cell implements SExpression{
 
   @Override
   public boolean equals(Object object){
-    if(object instanceof Cell){
-      Cell other = (Cell)object;
+    if(object instanceof List){
+      List other = (List)object;
       if(this.isEmpty() && other.isEmpty()){
         return true;
       }else{

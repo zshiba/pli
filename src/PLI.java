@@ -54,23 +54,23 @@ public class PLI{
   private void print(SExpression value){
     if(value instanceof Atom){
       System.out.print(value.toString());
-    }else if(value instanceof Cell){
-      Cell cell = (Cell)value;
-      if(cell.isEmpty()){
+    }else if(value instanceof List){
+      List list = (List)value;
+      if(list.isEmpty()){
         this.print(Atom.NIL);
       }else{
         System.out.print("(");
         while(true){
-          this.print(cell.car());
-          if(cell.cdr() instanceof Atom){
-            if(cell.cdr() != Atom.NIL){
+          this.print(list.car());
+          if(list.cdr() instanceof Atom){
+            if(list.cdr() != Atom.NIL){
               System.out.print(" . ");
-              System.out.print(cell.cdr());
+              System.out.print(list.cdr());
             }
             break;
-          }else if(cell.cdr() instanceof Cell){
+          }else if(list.cdr() instanceof List){
             System.out.print(" ");
-            cell = (Cell)cell.cdr(); //safe cast
+            list = (List)list.cdr(); //safe cast
           }else{
             System.out.print(value.toFullString());
           }

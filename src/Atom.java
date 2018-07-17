@@ -27,8 +27,8 @@ public class Atom implements SExpression{
   public boolean equals(Object object){
     if(object instanceof Atom){
       return this.toString().equals(object.toString());
-    }else if(object instanceof Cell){
-      if(this.equals(Atom.NIL) && ((Cell)object).isEmpty())
+    }else if(object instanceof List){
+      if(this.equals(Atom.NIL) && ((List)object).isEmpty())
         return true;
       else
         return false;

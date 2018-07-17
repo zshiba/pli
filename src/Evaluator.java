@@ -17,14 +17,14 @@ public class Evaluator{
       else
         throw new EvaluationErrorException("Undefined: " + expression.toFullString());
 
-    }else if(expression instanceof Cell){
-      Cell cell = (Cell)expression;
-      if(cell.isEmpty()){
+    }else if(expression instanceof List){
+      List list = (List)expression;
+      if(list.isEmpty()){
         return Atom.NIL;
 
       }else{
-        SExpression car = cell.car();
-        SExpression cdr = cell.cdr();
+        SExpression car = list.car();
+        SExpression cdr = list.cdr();
 
         if(car.equals(Atom.QUOTE)){
           return this.quote(cdr);
@@ -55,12 +55,12 @@ public class Evaluator{
 
   //special form: (quote value::s-expression)
   private SExpression quote(SExpression expression) throws EvaluationErrorException{
-    if(expression instanceof Cell){
-      Cell cell = (Cell)expression;
-      if(cell.cdr() == Atom.NIL)
-        return cell.car();
+    if(expression instanceof List){
+      List list = (List)expression;
+      if(list.cdr() == Atom.NIL)
+        return list.car();
       else
-        throw new EvaluationErrorException("Invalid expression: " + cell.cdr().toFullString());
+        throw new EvaluationErrorException("Invalid expression: " + list.cdr().toFullString());
     }else{
       throw new EvaluationErrorException("Invalid expression: " + expression.toFullString());
     }
@@ -68,13 +68,13 @@ public class Evaluator{
 
   //special form: (define key::atom value::s-expression)
   private SExpression define(SExpression expression, Environment environment) throws EvaluationErrorException{
-    if(expression instanceof Cell){
-      Cell cell = (Cell)expression;
-      SExpression car = cell.car();
-      SExpression cdr = cell.cdr();
+    if(expression instanceof List){
+      List list = (List)expression;
+      SExpression car = list.car();
+      SExpression cdr = list.cdr();
       if(car instanceof Atom){
         Atom key = (Atom)car;
-        SExpression value = this.evaluate(((Cell)cdr).car(), environment);
+        SExpression value = this.evaluate(((List)cdr).car(), environment);
         boolean isBound = environment.bind(key, value);
         if(isBound)
           return car;
@@ -90,21 +90,21 @@ public class Evaluator{
 
   //special form: (lambda (argument::atom...) body::s-expression)
   private SExpression lambda(SExpression expression, Environment environment) throws EvaluationErrorException{
-    if(expression instanceof Cell){
-      Cell cell = (Cell)expression;
-      SExpression car = cell.car();
-      SExpression cdr = cell.cdr();
-      if(car instanceof Cell){
-        Cell argument = (Cell)car;
+    if(expression instanceof List){
+      List list = (List)expression;
+      SExpression car = list.car();
+      SExpression cdr = list.cdr();
+      if(car instanceof List){
+        List argument = (List)car;
         while(true){
           if((argument.car() instanceof Atom) && (argument.cdr() == Atom.NIL))
             break;
           else if(!(argument.car() instanceof Atom))
             throw new EvaluationErrorException("Invalid expression: " + argument.car().toFullString());
-          else if(!(argument.cdr() instanceof Cell))
+          else if(!(argument.cdr() instanceof List))
             throw new EvaluationErrorException("Invalid expression: " + argument.cdr().toFullString());
           else
-            argument = (Cell)argument.cdr();
+            argument = (List)argument.cdr();
         }
         return new Procedure(car, cdr, environment);
       }else{
@@ -117,21 +117,21 @@ public class Evaluator{
 
   //special form: (cond ((predicate::s-expression then-body::s-expression)...))
   private SExpression cond(SExpression expression, Environment environment) throws EvaluationErrorException{
-    if(expression instanceof Cell){
-      Cell cell = (Cell)((Cell)expression).car(); //ToDo need check for safe cast
+    if(expression instanceof List){
+      List list = (List)((List)expression).car(); //ToDo need check for safe cast
       while(true){
-        SExpression clause = cell.car();
-        if(clause instanceof Cell){
-          SExpression predicate = ((Cell)clause).car();
-          SExpression body = ((Cell)((Cell)clause).cdr()).car(); //ToDo need check for safe cast
+        SExpression clause = list.car();
+        if(clause instanceof List){
+          SExpression predicate = ((List)clause).car();
+          SExpression body = ((List)((List)clause).cdr()).car(); //ToDo need check for safe cast
           SExpression result = this.evaluate(predicate, environment);
           if(result == Atom.TRUE){
             return this.evaluate(body, environment);
           }else{
-            if(cell.cdr() instanceof Cell)
-              cell = (Cell)cell.cdr();
+            if(list.cdr() instanceof List)
+              list = (List)list.cdr();
             else
-              throw new EvaluationErrorException("Invalid expression: " + cell.cdr().toFullString());
+              throw new EvaluationErrorException("Invalid expression: " + list.cdr().toFullString());
           }
         }else{
           throw new EvaluationErrorException("Invalid expression: " + clause.toFullString());
@@ -144,13 +144,13 @@ public class Evaluator{
 
   //primitive: (eq symbol1::s-expression symbol2::s-expression)
   private SExpression eq(SExpression expression, Environment environment) throws EvaluationErrorException{
-    if(expression instanceof Cell){
-      Cell cell = (Cell)expression;
-      SExpression expression1 = cell.car();
-      SExpression right = cell.cdr();
-      if(right instanceof Cell){
-        if(((Cell)right).cdr() == Atom.NIL){
-          SExpression expression2 = ((Cell)right).car();
+    if(expression instanceof List){
+      List list = (List)expression;
+      SExpression expression1 = list.car();
+      SExpression right = list.cdr();
+      if(right instanceof List){
+        if(((List)right).cdr() == Atom.NIL){
+          SExpression expression2 = ((List)right).car();
           expression1 = this.evaluate(expression1, environment);
           expression2 = this.evaluate(expression2, environment);
           if(expression1.equals(expression2))
@@ -158,7 +158,7 @@ public class Evaluator{
           else
             return Atom.NIL;
         }else{
-          throw new EvaluationErrorException("Invalid expression: " + ((Cell)right).cdr().toFullString());
+          throw new EvaluationErrorException("Invalid expression: " + ((List)right).cdr().toFullString());
         }
       }else{
         throw new EvaluationErrorException("Invalid expression: " + right.toFullString());
@@ -170,10 +170,10 @@ public class Evaluator{
 
   //primitive: (atom symbol::s-expression)
   private SExpression atom(SExpression expression, Environment environment) throws EvaluationErrorException{
-    if(expression instanceof Cell){
-      Cell cell = (Cell)expression;
-      SExpression car = cell.car();
-      SExpression cdr = cell.cdr();
+    if(expression instanceof List){
+      List list = (List)expression;
+      SExpression car = list.car();
+      SExpression cdr = list.cdr();
       if(cdr == Atom.NIL){
         if(car instanceof Atom){
           if(environment.find((Atom)car) != null)
@@ -194,16 +194,16 @@ public class Evaluator{
 
   //primitive: (cons expression1::s-expression expression2::s-expression)
   private SExpression cons(SExpression expression, Environment environment) throws EvaluationErrorException{
-    if(expression instanceof Cell){
-      Cell cell = (Cell)expression;
-      SExpression expression1 = cell.car();
-      SExpression right = cell.cdr();
-      if(right instanceof Cell){
-        if(((Cell)right).cdr() == Atom.NIL){
-          SExpression expression2 = ((Cell)right).car();
-          return new Cell(this.evaluate(expression1, environment), this.evaluate(expression2, environment));
+    if(expression instanceof List){
+      List list = (List)expression;
+      SExpression expression1 = list.car();
+      SExpression right = list.cdr();
+      if(right instanceof List){
+        if(((List)right).cdr() == Atom.NIL){
+          SExpression expression2 = ((List)right).car();
+          return new List(this.evaluate(expression1, environment), this.evaluate(expression2, environment));
         }else{
-          throw new EvaluationErrorException("Invalid expression: " + ((Cell)right).cdr().toFullString());
+          throw new EvaluationErrorException("Invalid expression: " + ((List)right).cdr().toFullString());
         }
       }else{
         throw new EvaluationErrorException("Invalid expression: " + right.toFullString());
@@ -215,14 +215,14 @@ public class Evaluator{
 
   //primitive: (car list::s-expression)
   private SExpression car(SExpression expression, Environment environment) throws EvaluationErrorException{
-    if(expression instanceof Cell){
-      Cell cell = (Cell)expression;
+    if(expression instanceof List){
+      List cell = (List)expression;
       SExpression car = cell.car();
       SExpression cdr = cell.cdr();
       if(cdr == Atom.NIL){
         SExpression e = this.evaluate(car, environment);
-        if(e instanceof Cell){
-          Cell list = (Cell)e;
+        if(e instanceof List){
+          List list = (List)e;
           if(list.isEmpty())
             return Atom.NIL;
           else
@@ -240,14 +240,14 @@ public class Evaluator{
 
   //primitive: (cdr list::s-expression)
   private SExpression cdr(SExpression expression, Environment environment) throws EvaluationErrorException{
-    if(expression instanceof Cell){
-      Cell cell = (Cell)expression;
+    if(expression instanceof List){
+      List cell = (List)expression;
       SExpression car = cell.car();
       SExpression cdr = cell.cdr();
       if(cdr == Atom.NIL){
         SExpression e = this.evaluate(car, environment);
-        if(e instanceof Cell){
-          Cell list = (Cell)e;
+        if(e instanceof List){
+          List list = (List)e;
           if(list.isEmpty())
             return Atom.NIL;
           else
@@ -264,10 +264,10 @@ public class Evaluator{
   }
 
   private SExpression apply(SExpression expression, Environment environment) throws EvaluationErrorException{
-    if(expression instanceof Cell){
-      Cell cell = (Cell)expression;
-      SExpression car = cell.car();
-      SExpression cdr = cell.cdr();
+    if(expression instanceof List){
+      List list = (List)expression;
+      SExpression car = list.car();
+      SExpression cdr = list.cdr();
       SExpression procedure = this.evaluate(car, environment);
       if(procedure instanceof Procedure){
         SExpression parameters = ((Procedure)procedure).getParameters();
@@ -280,36 +280,36 @@ public class Evaluator{
         while(true){
           if(argument == Atom.NIL){
             break;
-          }else if(!(argument instanceof Cell)){
+          }else if(!(argument instanceof List)){
             throw new EvaluationErrorException("Invalid expression: " + argument.toFullString());
           }else{
-            Cell newbie = new Cell(this.evaluate(((Cell)argument).car(), environment));
+            List newbie = new List(this.evaluate(((List)argument).car(), environment));
             if(arguments == null)
               arguments = newbie;
             else
-              ((Cell)argument).cdr(newbie); //ad-hoc safe cast only within this context
-            argument = ((Cell)argument).cdr();
+              ((List)argument).cdr(newbie); //ad-hoc safe cast only within this context
+            argument = ((List)argument).cdr();
           }
         }
         //create new local environment; bind parameters and evaluated_arguments
         Environment local = new Environment(env);
-        SExpression parameter = ((Cell)parameters).car();    //ToDo
-        SExpression arg = ((Cell)arguments).car();           //ToDo
+        SExpression parameter = ((List)parameters).car();    //ToDo
+        SExpression arg = ((List)arguments).car();           //ToDo
         while(parameter != Atom.NIL && arg != Atom.NIL){     //ToDo
           local.bind((Atom)parameter, arg);                  //ToDo
           if(parameter instanceof Atom || arg instanceof Atom)
             break;
-          parameter = ((Cell)((Cell)parameter).cdr()).car(); //ToDo
-          arg = ((Cell)((Cell)arg).cdr()).car();             //ToDo
+          parameter = ((List)((List)parameter).cdr()).car(); //ToDo
+          arg = ((List)((List)arg).cdr()).car();             //ToDo
         }
         //evaluate body with the new local environment
         SExpression value = null;
-        SExpression b = ((Cell)body);
+        SExpression b = ((List)body);
         while(b != Atom.NIL){
-          value = this.evaluate(((Cell)b).car(), local);
+          value = this.evaluate(((List)b).car(), local);
           if(b instanceof Atom)
             break;
-          b = ((Cell)b).cdr();
+          b = ((List)b).cdr();
         }
         return value;
       }else{
