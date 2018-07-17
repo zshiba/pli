@@ -10,6 +10,18 @@ public class Procedure implements SExpression{
     this.environment = environment;
   }
 
+  public SExpression getParameters(){
+    return this.parameters;
+  }
+
+  public SExpression getBody(){
+    return this.body;
+  }
+
+  public Environment getEnvironment(){
+    return this.environment;
+  }
+
   @Override
   public boolean equals(Object object){
     return false; //ToDo
