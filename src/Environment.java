@@ -1,13 +1,13 @@
 public class Environment{
 
-  private static class PairNode{ //node of association list (singly linked list of key-value pair)
+  private static class Pair{ //node of association list (singly linked list of key-value pair)
 
     private Atom key;
     private SExpression value;
     private boolean isPrimitive;
-    private PairNode next;
+    private Pair next;
 
-    public PairNode(Atom key, SExpression value, boolean isPrimitive){
+    public Pair(Atom key, SExpression value, boolean isPrimitive){
       this.key = key;
       this.value = value;
       this.isPrimitive = isPrimitive;
@@ -30,18 +30,18 @@ public class Environment{
       return this.isPrimitive;
     }
 
-    public PairNode next(){
+    public Pair next(){
       return this.next;
     }
 
-    public void setNext(PairNode node){
+    public void setNext(Pair node){
       this.next = node;
     }
 
   }
 
   private Environment outer;
-  private PairNode head;
+  private Pair head;
 
   public Environment(){
     this(null);
@@ -62,10 +62,10 @@ public class Environment{
 
   private boolean bind(Atom key, SExpression value, boolean isPrimitive){
     boolean isBound = false;
-    PairNode newbie = new PairNode(key, value, isPrimitive);
+    Pair newbie = new Pair(key, value, isPrimitive);
 
-    PairNode previous = null;
-    PairNode current = this.head;
+    Pair previous = null;
+    Pair current = this.head;
     while(current != null){
       if(current.key().equals(key))
         break;
@@ -89,7 +89,7 @@ public class Environment{
   }
 
   public SExpression find(Atom key){
-    PairNode node = this.head;
+    Pair node = this.head;
     while(node != null){
       if(node.key().equals(key))
         break;
@@ -101,6 +101,20 @@ public class Environment{
       return this.outer.find(key);
     else
       return null;
+  }
+
+  //for tests
+  public void dump(){
+    System.out.println("=== start environment.dump()  ===");
+    Pair node = this.head;
+    while(node != null){
+      System.out.println("-");
+      System.out.println("key: " + node.key().toFullString());
+      System.out.println("value: " + node.value().toFullString());
+      System.out.println("-");
+      node = node.next();
+    }
+    System.out.println("=== end   environment.dump() ===");
   }
 
 }

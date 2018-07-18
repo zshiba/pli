@@ -52,8 +52,34 @@ public class PLI{
   }
 
   private void print(SExpression value){
-    System.out.println(value.toString());
-    System.out.println();
+    if(value instanceof Atom){
+      System.out.print(value.toString());
+    }else if(value instanceof List){
+      List list = (List)value;
+      if(list.isEmpty()){
+        this.print(Atom.NIL);
+      }else{
+        System.out.print("(");
+        while(true){
+          this.print(list.car());
+          if(list.cdr() instanceof Atom){
+            if(list.cdr() != Atom.NIL){
+              System.out.print(" . ");
+              System.out.print(list.cdr());
+            }
+            break;
+          }else if(list.cdr() instanceof List){
+            System.out.print(" ");
+            list = (List)list.cdr(); //safe cast
+          }else{
+            System.out.print(value.toFullString());
+          }
+        }
+        System.out.print(")");
+      }
+    }else{
+      System.out.print(value.toFullString());
+    }
   }
 
   public void loop(){
@@ -66,6 +92,8 @@ public class PLI{
             SExpression value = this.eval(expression);
             System.out.print(OUTPUT_PROMPT);
             this.print(value);
+            System.out.println();
+            System.out.println();
           }
         }catch(Parser.ParseErrorException | Evaluator.EvaluationErrorException ex){
           System.out.print(ERROR_PROMPT);

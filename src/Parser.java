@@ -37,12 +37,12 @@ public class Parser{
           car = this.build();
         }catch(ParseErrorException e){
           if(e.isOfCloseParenthesis()) //ad-hoc
-            return new Cell(); //empty list
+            return new List(); //empty list
           else
             throw e;
         }
-        Cell root = new Cell(car);
-        Cell leaf = root;
+        List root = new List(car);
+        List leaf = root;
         while(this.lexer.hasToken()){
           SExpression cdr;
           try{
@@ -53,8 +53,8 @@ public class Parser{
             else
               throw e;
           }
-          leaf.cdr(new Cell(cdr));
-          leaf = (Cell)leaf.cdr(); //ad-hoc (safe cast only within this context)
+          leaf.cdr(new List(cdr));
+          leaf = (List)leaf.cdr(); //ad-hoc (safe cast only within this context)
         }
         throw new ParseErrorException("(missing ')')");
       }else if(type == Token.Type.CLOSE_PARENTHESIS){
