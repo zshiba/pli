@@ -1,5 +1,5 @@
 # PLI
-PLI is a Pure Lisp interpreter written in Java. (work in progress)
+PLI is a **Pure Lisp** interpreter written in Java. (work in progress)
 
 ## Getting Started
 1. Download the zip of this repository, and then unzip it. Or, clone the repository with the git command.
@@ -16,7 +16,7 @@ $ javac -d . -cp ./src ./src/PLI.java
 $ java PLI
 >> 
 ```
-5. The source can go across multiple lines. To indicate the end of the source, send a EOF (End Of File) control (Ctrl_D). See "Limitation" below.
+5. The source can go across multiple lines. To indicate the end of the source, send a EOF (End Of File) control (Ctrl+D). See "Limitation" below.
 ```bash
 $ java PLI
 >> (quote a)
@@ -25,14 +25,101 @@ $ java PLI
 => a
 
 => b
+```
 
+## Note
+### t , nil, ()
+```
+>> t
+=> t
+
+>> nil
+=> nil
+
+>> ()
+=> nil
+```
+### quote
+```
+>> (quote a)
+=> a
+
+>> (quote (a b c))
+=> (a b c)
+```
+### define
+```
+>> (define a (quote a))
+=> a
+
+>> a       
+=> a
+```
+### lambda
+```
+>> (lambda (x) (quote x))
+=> (procedure)
+
+>> ((lambda (x) (quote x)) (quote a))
+=> x
+```
+### cond
+```
+>> (cond (nil (quote a)) (t (quote b)))
+=> b
+
+>> (cond (nil (quote a))                                                  
+         (nil (quote b))
+         (t   (quote c)))
+=> c
+```
+### eq
+```
+>> (eq t t)
+=> t
+
+>> (eq t nil)
+=> nil
+
+>> (eq nil ())
+=> t
+
+>> (eq () nil)
+=> t
+
+>> (eq t ())
+=> nil
+
+>> (eq (quote a) (quote b))
+=> nil
+```
+### atom
+```
+>> 
+```
+### cons
+```
+>> 
+```
+### car
+```
+>> 
+```
+### cdr
+```
 >> 
 ```
 
-
+## ToDos
+- [ ] Accept dot notation form as input.
+- [ ] Update Procedure.java (Impliment ToDos).
+- [ ] Update Procedure.java (Reconsider the abstraction. Is procedure s-expression?).
+- [ ] Add test cases.
+- [ ] Refactor Evaluator.java
 
 ## Limitation
-To indicate the end of the source with stdin, it is necessary to enter a newline character (hit the enter key) at the end of the source and then send a EOF control (Ctrl+D).
+- To indicate the end of the source with stdin, it is necessary to enter a newline character (hit the enter key) at the end of the source and then send a EOF control (Ctrl+D).
+- Currently, input source must be written as the list notation form, (not the dot notation form).
 
 ## Development Environment
 Mac, JDK 1.8
