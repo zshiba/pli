@@ -29,12 +29,12 @@ public class Procedure implements SExpression{
 
   @Override
   public String toString(){
-    return "(procedure)";
+    return "(procedure)"; //ToDo
   }
 
   @Override
   public String toFullString(){
-    return this.toString();
+    return this.toString(); //ToDo
   }
 
 }
