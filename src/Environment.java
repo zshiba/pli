@@ -103,4 +103,18 @@ public class Environment{
       return null;
   }
 
+  //for tests
+  public void dump(){
+    System.out.println("=== start environment.dump()  ===");
+    Pair node = this.head;
+    while(node != null){
+      System.out.println("-");
+      System.out.println("key: " + node.key().toFullString());
+      System.out.println("value: " + node.value().toFullString());
+      System.out.println("-");
+      node = node.next();
+    }
+    System.out.println("=== end   environment.dump() ===");
+  }
+
 }
