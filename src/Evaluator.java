@@ -115,23 +115,27 @@ public class Evaluator{
     }
   }
 
-  //special form: (cond ((predicate::s-expression then-body::s-expression)...))
+  //special form: (cond (predicate::s-expression then-body::s-expression)...)
   private SExpression cond(SExpression expression, Environment environment) throws EvaluationErrorException{
     if(expression instanceof List){
-      List list = (List)((List)expression).car(); //ToDo need check for safe cast
+      List list = (List)expression;
       while(true){
         SExpression clause = list.car();
         if(clause instanceof List){
           SExpression predicate = ((List)clause).car();
-          SExpression body = ((List)((List)clause).cdr()).car(); //ToDo need check for safe cast
           SExpression result = this.evaluate(predicate, environment);
           if(result == Atom.TRUE){
+            SExpression body = ((List)((List)clause).cdr()).car(); //ToDo need check for safe cast
             return this.evaluate(body, environment);
           }else{
-            if(list.cdr() instanceof List)
-              list = (List)list.cdr();
-            else
+            if(list.cdr() instanceof List){
+              if(list.cdr() == Atom.NIL) //no more condition clause
+                return Atom.NIL;
+              else
+                list = (List)list.cdr();
+            }else{
               throw new EvaluationErrorException("Invalid expression: " + list.cdr().toFullString());
+            }
           }
         }else{
           throw new EvaluationErrorException("Invalid expression: " + clause.toFullString());
@@ -276,6 +280,7 @@ public class Evaluator{
 
         //evaluate arguments with environment
         SExpression arguments = null;
+        SExpression tail = arguments;
         SExpression argument = cdr;
         while(true){
           if(argument == Atom.NIL){
@@ -284,40 +289,46 @@ public class Evaluator{
             throw new EvaluationErrorException("Invalid expression: " + argument.toFullString());
           }else{
             List newbie = new List(this.evaluate(((List)argument).car(), environment));
-            if(arguments == null)
+            if(arguments == null){
               arguments = newbie;
-            else
-              ((List)argument).cdr(newbie); //ad-hoc safe cast only within this context
+              tail = arguments;
+            }else{
+              ((List)tail).cdr(newbie); //ad-hoc safe cast only within this context
+              tail = newbie;
+            }
             argument = ((List)argument).cdr();
           }
         }
+
         //create new local environment; bind parameters and evaluated_arguments
         Environment local = new Environment(env);
-        SExpression parameter = ((List)parameters).car();    //ToDo
-        SExpression arg = ((List)arguments).car();           //ToDo
-        while(parameter != Atom.NIL && arg != Atom.NIL){     //ToDo
-          local.bind((Atom)parameter, arg);                  //ToDo
-          if(parameter instanceof Atom || arg instanceof Atom)
-            break;
-          parameter = ((List)((List)parameter).cdr()).car(); //ToDo
-          arg = ((List)((List)arg).cdr()).car();             //ToDo
+        SExpression p = parameters;
+        SExpression a = arguments;
+        while(p != Atom.NIL){
+          SExpression parameter = ((List)p).car();
+          SExpression arg = ((List)a).car();
+          local.bind((Atom)parameter, arg);
+          p = ((List)p).cdr();
+          a = ((List)a).cdr();
         }
+
         //evaluate body with the new local environment
         SExpression value = null;
-        SExpression b = ((List)body);
+        SExpression b = body;
         while(b != Atom.NIL){
           value = this.evaluate(((List)b).car(), local);
-          if(b instanceof Atom)
+          if(b instanceof List)
+            b = ((List)b).cdr();
+          else
             break;
-          b = ((List)b).cdr();
         }
         return value;
       }else{
         System.out.println(procedure);
-        throw new EvaluationErrorException("aaa Invalid expression: " + procedure.toFullString());
+        throw new EvaluationErrorException("Invalid expression: " + procedure.toFullString());
       }
     }else{
-      throw new EvaluationErrorException("bbb Invalid expression: " + expression.toFullString());
+      throw new EvaluationErrorException("Invalid expression: " + expression.toFullString());
     }
   }
 
