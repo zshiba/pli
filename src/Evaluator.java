@@ -184,6 +184,11 @@ public class Evaluator{
             return Atom.TRUE;
           else
             throw new EvaluationErrorException("Invalid expression: " + car.toFullString());
+        }else if(car instanceof List){
+          if(((List)car).isEmpty())
+            return Atom.TRUE;
+          else
+            return Atom.NIL;
         }else{
           return Atom.NIL;
         }
