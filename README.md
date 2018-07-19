@@ -113,6 +113,9 @@ $ java PLI
 
 >> (atom nil)
 => t
+
+>> (atom ())
+=> t
 ```
 ### cons
 ```
@@ -161,6 +164,7 @@ $ java PLI
 - [ ] Update Parser.java to accept dot notation form as input
 - [ ] Update Procedure.java (Impliment ToDos)
 - [ ] (Reconsider the abstraction. Is procedure s-expression?)
+- [ ] Find the definition of atom()
 - [ ] Add test cases
 - [ ] Make error handlings robust
 - [ ] Refactor Evaluator.java
