@@ -160,11 +160,52 @@ $ java PLI
 => c
 ```
 
+## Exmaples
+```
+>> (define numbers (cons (cons (quote 1) (quote 2)) (cons (quote 3) (quote 4))))
+=> numbers
+
+>> numbers
+=> ((1 . 2) 3 . 4)
+
+>> (define caar (lambda (l) (car (car l))))
+=> caar
+
+>> (define cadr (lambda (l) (car (cdr l))))
+=> cadr
+
+>> 
+(define cdar (lambda (l) (cdr (car l))))    
+=> cdar
+
+>> (define cddr (lambda (l) (cdr (cdr l))))
+=> cddr
+
+>> (car numbers)
+=> (1 . 2)
+
+>> (cdr numbers)
+=> (3 . 4)
+
+>> (caar numbers)
+=> 1
+
+>> (cadr numbers)
+=> 3
+
+>> (cdar numbers)
+=> 2
+
+>> (cddr numbers)
+=> 4
+```
+
 ## ToDos
 - [ ] Update Parser.java to accept dot notation form as input
 - [ ] Update Procedure.java (Impliment ToDos)
 - [ ] (Reconsider the abstraction. Is procedure s-expression?)
 - [ ] Find the definition of atom()
+- [ ] Add examples
 - [ ] Add test cases
 - [ ] Make error handlings robust
 - [ ] Refactor Evaluator.java
