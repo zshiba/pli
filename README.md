@@ -1,5 +1,6 @@
 # PLI
-PLI is a **Pure Lisp** interpreter written in Java. (work in progress)
+PLI is a **Pure Lisp** interpreter written in Java.
+(This project is still a work in progress.)
 
 ## Getting Started
 1. Download the zip of this repository, and then unzip it. Or, clone the repository with the git command.
@@ -16,7 +17,7 @@ $ javac -d . -cp ./src ./src/PLI.java
 $ java PLI
 >> 
 ```
-5. The source can go across multiple lines. To indicate the end of the source, send a EOF (End Of File) control (Ctrl+D). See "Limitation" below.
+5. The source can go across multiple lines. To indicate the end of the source, send a EOF (End Of File) control (Ctrl+D). See the "Limitation" section below for more details.
 ```bash
 $ java PLI
 >> (quote a)
@@ -111,10 +112,11 @@ $ java PLI
 ```
 
 ## ToDos
-- [ ] Accept dot notation form as input.
-- [ ] Update Procedure.java (Impliment ToDos).
-- [ ] Update Procedure.java (Reconsider the abstraction. Is procedure s-expression?).
-- [ ] Add test cases.
+- [ ] Update Parser.java to accept dot notation form as input
+- [ ] Update Procedure.java (Impliment ToDos)
+- [ ] (Reconsider the abstraction. Is procedure s-expression?)
+- [ ] Add test cases
+- [ ] Make error handlings robust
 - [ ] Refactor Evaluator.java
 
 ## Limitation
