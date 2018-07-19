@@ -1,6 +1,5 @@
 # PLI
-PLI is a **Pure Lisp** interpreter written in Java.  
-(This project is still a work in progress.)
+PLI is a **Pure Lisp** interpreter written in Java. (This project is still a work in progress.)
 
 ## Getting Started
 1. Download the zip of this repository, and then unzip it. Or, clone the repository with the git command.
@@ -175,3 +174,8 @@ Mac, JDK 1.8
 
 ## License
 MIT
+
+## References
+- [(How to Write a (Lisp) Interpreter (in Python))](http://norvig.com/lispy.html)
+- [The Roots of Lisp](http://www.paulgraham.com/rootsoflisp.html)
+- [RECURSIVE FUNCTIONS OF SYMBOLIC EXPRESSIONS AND THEIR COMPUTATION BY MACHINE (Part I) (12-May-1998)](http://www-formal.stanford.edu/jmc/recursive.html)
