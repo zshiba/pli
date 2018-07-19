@@ -1,5 +1,5 @@
 # PLI
-PLI is a **Pure Lisp** interpreter written in Java.
+PLI is a **Pure Lisp** interpreter written in Java.  
 (This project is still a work in progress.)
 
 ## Getting Started
@@ -22,13 +22,13 @@ $ java PLI
 $ java PLI
 >> (quote a)
 (quote b)
-# Note: After writing code, hit the enter key and then send Ctrl+D.
+# Note: After writing code, hit the enter key and then hit Ctrl+D.
 => a
 
 => b
 ```
 
-## Note
+## Constant Literals and the Empty List
 ### t , nil, ()
 ```
 >> t
@@ -40,6 +40,7 @@ $ java PLI
 >> ()
 => nil
 ```
+## Special Forms
 ### quote
 ```
 >> (quote a)
@@ -50,19 +51,28 @@ $ java PLI
 ```
 ### define
 ```
+>> a       
+** eval error: Undefined: a
+
 >> (define a (quote a))
 => a
 
 >> a       
 => a
+
+>> (define b a)
+=> b
+
+>> b
+=> a
 ```
 ### lambda
 ```
->> (lambda (x) (quote x))
+>> (lambda (x) x) 
 => (procedure)
 
->> ((lambda (x) (quote x)) (quote a))
-=> x
+>> ((lambda (x) x) (quote a))
+=> a
 ```
 ### cond
 ```
@@ -93,22 +103,59 @@ $ java PLI
 
 >> (eq (quote a) (quote b))
 => nil
+
+>> (eq (quote a) (quote a))
+=> t
 ```
 ### atom
 ```
->> 
+>> (atom t)
+=> t
+
+>> (atom nil)
+=> t
 ```
 ### cons
 ```
->> 
+>> (cons (quote a) (quote b))
+=> (a . b)
+
+>> (cons (quote a) nil)
+=> (a)
+
+>> (cons (quote a) (cons (quote b) nil))
+=> (a b)
+
+>> (cons (cons (quote a) nil) (quote b))
+=> ((a) . b)
+
+>> (cons (quote a) (cons (quote b) (quote c)))
+=> (a b . c)
+
+>> (cons (quote a) (cons (quote b) (cons (quote c) nil)))
+=> (a b c)
 ```
 ### car
 ```
->> 
+>> (car (cons (quote a) (quote b)))
+=> a
+
+>> (car (cons (quote a) (cons (quote b) (quote c))))
+=> a
+
+>> (car (cons (cons (quote a) (quote b)) (quote c)))
+=> (a . b)
 ```
 ### cdr
 ```
->> 
+>> (cdr (cons (quote a) (quote b)))
+=> b
+
+>> (cdr (cons (quote a) (cons (quote b) (quote c))))
+=> (b . c)
+
+>> (cdr (cons (cons (quote a) (quote b)) (quote c)))
+=> c
 ```
 
 ## ToDos
