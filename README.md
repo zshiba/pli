@@ -12,12 +12,12 @@ $ git clone https://github.com/zshiba/pli.git
 $ javac -d . -cp ./src ./src/PLI.java
 ```
 4. Run the interpreter. (Start REPL.)
-```bash
+```
 $ java PLI
 >> 
 ```
 5. The source can go across multiple lines. To indicate the end of the source, send a EOF (End Of File) control (Ctrl+D). See the "Limitation" section below for more details.
-```bash
+```
 $ java PLI
 >> (quote a)
 (quote b)
@@ -201,6 +201,21 @@ $ java PLI
 
 >> (cddr numbers)
 => 4
+
+>> (define reverse (lambda (l a) (cond ((eq l nil) a) (t (reverse (cdr l) (cons (car l) a))))))
+=> reverse
+
+>> (define numbers (cons (quote 1) (cons (quote 2) (cons (quote 3) (cons (quote 4) (cons (quote 5) ()))))))
+=> numbers
+
+>> numbers
+=> (1 2 3 4 5)
+
+>> (reverse numbers ())
+=> (5 4 3 2 1)
+
+>> (reverse (quote (a b c d e f g)) ())
+=> (g f e d c b a)
 ```
 
 ## ToDos
