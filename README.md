@@ -126,6 +126,9 @@ $ java PLI
 >> (cons (quote a) nil)
 => (a)
 
+>> (cons (quote a) ())
+=> (a)
+
 >> (cons (quote a) (cons (quote b) nil))
 => (a b)
 
@@ -175,8 +178,7 @@ $ java PLI
 >> (define cadr (lambda (l) (car (cdr l))))
 => cadr
 
->> 
-(define cdar (lambda (l) (cdr (car l))))    
+>> (define cdar (lambda (l) (cdr (car l))))    
 => cdar
 
 >> (define cddr (lambda (l) (cdr (cdr l))))
