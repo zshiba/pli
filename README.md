@@ -83,6 +83,7 @@ $ java PLI
          (t   (quote c)))
 => c
 ```
+## Primitive functions
 ### eq
 ```
 >> (eq t t)
