@@ -203,7 +203,7 @@ $ java PLI
 >> (cddr numbers)
 => 4
 ```
-### reverse (a list)
+### reverse (a list by using an accumulator)
 ```
 >> (define reverse (lambda (l a) (cond ((eq l nil) a) (t (reverse (cdr l) (cons (car l) a))))))
 => reverse
@@ -231,6 +231,31 @@ $ java PLI
 
 >> (append (cons (quote a) (cons (quote b) nil)) (cons (quote c) (cons (quote d) (cons (quote e) nil))))
 => (a b c d e)
+```
+### contain (if the list contatins the element)
+```
+>> (define contain (lambda (l e) (cond ((eq l ()) nil)
+                                       ((eq (car l) e) t)
+                                       (t (contain (cdr l) e)))))
+=> contain
+
+>> (define l (quote (a 2 c 4 e 6 g)))
+=> l
+
+>> l
+=> (a 2 c 4 e 6 g)
+
+>> (contain l (quote a))
+=> t
+
+>> (contain l (quote 1))
+=> nil
+
+>> (contain l (quote 6))
+=> t
+
+>> (contain l (quote 7))
+=> nil
 ```
 ## ToDos
 - [ ] Update Parser.java to accept dot notation form as input
