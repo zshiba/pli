@@ -165,6 +165,7 @@ $ java PLI
 ```
 
 ## Exmaples
+### caar, cadr, cdar, cddr
 ```
 >> (define numbers (cons (cons (quote 1) (quote 2)) (cons (quote 3) (quote 4))))
 => numbers
@@ -201,7 +202,9 @@ $ java PLI
 
 >> (cddr numbers)
 => 4
-
+```
+### reverse (a list)
+```
 >> (define reverse (lambda (l a) (cond ((eq l nil) a) (t (reverse (cdr l) (cons (car l) a))))))
 => reverse
 
@@ -217,7 +220,18 @@ $ java PLI
 >> (reverse (quote (a b c d e f g)) ())
 => (g f e d c b a)
 ```
+### append (one list to another)
+```
+>> (define append (lambda (xs ys) (cond ((eq xs ()) ys)
+                                        (t (cons (car xs) (append (cdr xs) ys))))))
+=> append
 
+>> (append (quote (a b c)) (quote (d e f)))
+=> (a b c d e f)
+
+>> (append (cons (quote a) (cons (quote b) nil)) (cons (quote c) (cons (quote d) (cons (quote e) nil))))
+=> (a b c d e)
+```
 ## ToDos
 - [ ] Update Parser.java to accept dot notation form as input
 - [ ] Update Procedure.java (Impliment ToDos)
