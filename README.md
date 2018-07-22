@@ -257,7 +257,7 @@ $ java PLI
 >> (contain l (quote 7))
 => nil
 ```
-### filter (a list with a predicate)
+### filter (elements in a list with a predicate)
 ```
 >> (define filter (lambda (p l) (cond ((eq l ()) ())
                                       ((p (car l)) (cons (car l) (filter p (cdr l))))
@@ -282,6 +282,32 @@ $ java PLI
 
 >> (filter pred (quote (1 2 3 4 5 6 7 8 9)))
 => (2 4 6 8)
+```
+### drop (elements in a list with a predicate)
+```
+>> (define drop (lambda (p l) (cond ((eq l ()) ())
+                                    ((p (car l)) (drop p (cdr l)))
+                                    (t (cons (car l) (drop p (cdr l)))))))
+=> drop
+
+>> (drop (lambda (x) (eq x (quote 1))) (quote (1 2 1 2 1)))
+=> (2 2)
+
+>> (drop (lambda (x) (eq x (quote 2))) (quote (1 2 1 2 1)))
+=> (1 1 1)
+
+>> (drop (lambda (x) (eq x (quote 3))) (quote (1 2 1 2 1)))  
+=> (1 2 1 2 1)
+
+>> (define pred (lambda (x) (cond ((eq x (quote 2)) t)
+                                  ((eq x (quote 4)) t)
+                                  ((eq x (quote 6)) t)
+                                  ((eq x (quote 8)) t)
+                                  (t nil))))
+=> pred
+
+>> (drop pred (quote (1 2 3 4 5 6 7 8 9)))
+=> (1 3 5 7 9)
 ```
 ## ToDos
 - [ ] Update Parser.java to accept dot notation form as input
