@@ -309,6 +309,28 @@ $ java PLI
 >> (drop pred (quote (1 2 3 4 5 6 7 8 9)))
 => (1 3 5 7 9)
 ```
+### zip (two lists)
+```
+>> (define zip (lambda (xs ys) (cond ((eq xs ()) ())
+                                     ((eq ys ()) ())
+                                     (t (cons (cons (car xs) (cons (car ys) nil)) (zip (cdr xs) (cdr ys)))))))
+=> zip
+
+>> (zip (quote (a b c)) (quote (1 2 3)))
+=> ((a 1) (b 2) (c 3))
+
+>> (zip (quote (a b c)) ())
+=> nil
+
+>> (zip () (quote (1 2 3)))
+=> nil
+
+>> (zip (quote (a b c)) (quote (1 2)))
+=> ((a 1) (b 2))
+
+>> (zip (quote (a b)) (quote (1 2 3)))
+=> ((a 1) (b 2))
+```
 ## ToDos
 - [ ] Update Parser.java to accept dot notation form as input
 - [ ] Update Procedure.java (Impliment ToDos)
