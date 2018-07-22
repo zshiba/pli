@@ -309,7 +309,7 @@ $ java PLI
 >> (drop pred (quote (1 2 3 4 5 6 7 8 9)))
 => (1 3 5 7 9)
 ```
-### zip (two lists)
+### zip (two lists into one)
 ```
 >> (define zip (lambda (xs ys) (cond ((eq xs ()) ())
                                      ((eq ys ()) ())
