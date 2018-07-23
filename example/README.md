@@ -14,7 +14,7 @@
 >> (define cadr (lambda (l) (car (cdr l))))
 => cadr
 
->> (define cdar (lambda (l) (cdr (car l))))    
+>> (define cdar (lambda (l) (cdr (car l))))
 => cdar
 
 >> (define cddr (lambda (l) (cdr (cdr l))))
@@ -171,4 +171,85 @@
 
 >> (zip (quote (a b)) (quote (1 2 3)))
 => ((a 1) (b 2))
+```
+
+### list (crests a list in which the send argument can be an atom)
+```lisp
+>> (define list (lambda (x y) (cons x (cons y ()))))
+=> list
+
+>> (list (quote a) (quote b))
+=> (a b)
+
+>> (list (quote a) ())
+=> (a nil)
+
+>> (list (quote a) (quote (b c)))
+=> (a (b c))
+
+>> (cons (quote a) (quote b))
+=> (a . b)
+
+>> (cons (quote a) ())
+=> (a)
+
+>> (cons (quote a) (quote (b c)))
+=> (a b c)
+```
+
+### find (the value associated with the given key in a list of key-value pairs)
+```lisp
+>> (define find (lambda (k l) (cond ((eq k ()) ())
+                                    ((eq l ()) ())
+                                    ((eq k (car (car l))) (car (cdr (car l))))
+                                    (t (find k (cdr l))))))
+=> find
+
+>> (define pairs (quote ((k1 v1) (k2 v2) (k3 v3) (k4 v4) (k5 v5))))
+=> pairs
+
+>> pairs
+=> ((k1 v1) (k2 v2) (k3 v3) (k4 v4) (k5 v5))
+
+>> (find (quote k3) pairs)
+=> v3
+
+>> (find (quote k4) pairs)
+=> v4
+
+>> (find (quote somthing) pairs)
+=> nil
+```
+
+### update (the pair that matches the given key with the new value)
+```lisp
+>> (define update (lambda (k v l) (cond ((eq k ()) l)
+                                        ((eq l ()) l)
+                                        ((eq k (car (car l))) (cons (cons k (cons v ())) (cdr l)))
+                                        (t (cons (car l) (update k v (cdr l)))))))
+=> update
+
+>> (define pairs (quote ((k1 v1) (k2 v2) (k3 v3) (k4 v4) (k5 v5))))
+=> pairs
+
+>> pairs
+=> ((k1 v1) (k2 v2) (k3 v3) (k4 v4) (k5 v5))
+
+>> (update (quote k1) (quote vvv111) pairs)
+=> ((k1 vvv111) (k2 v2) (k3 v3) (k4 v4) (k5 v5))
+
+>> (update (quote k2) (quote vvv222) pairs)
+=> ((k1 v1) (k2 vvv222) (k3 v3) (k4 v4) (k5 v5))
+
+>> (update (quote k5) (quote vvv555) pairs)
+=> ((k1 v1) (k2 v2) (k3 v3) (k4 v4) (k5 vvv555))
+
+>> (update (quote something) (quote something) pairs)
+=> ((k1 v1) (k2 v2) (k3 v3) (k4 v4) (k5 v5))
+
+>> (define updated_pairs (update (quote k3) (quote vvv333) pairs))
+=> updated_pairs
+
+>> updated_pairs
+=> ((k1 v1) (k2 v2) (k3 vvv333) (k4 v4) (k5 v5))
 ```
