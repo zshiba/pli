@@ -131,7 +131,7 @@
 >> (drop (lambda (x) (eq x (quote 2))) (quote (1 2 1 2 1)))
 => (1 1 1)
 
->> (drop (lambda (x) (eq x (quote 3))) (quote (1 2 1 2 1)))  
+>> (drop (lambda (x) (eq x (quote 3))) (quote (1 2 1 2 1)))
 => (1 2 1 2 1)
 
 >> (define pred (lambda (x) (cond ((eq x (quote 2)) t)
