@@ -1,5 +1,5 @@
-# PLI
-## Exmaples
+# Pure Lisp Interpreter (PLI) Examples
+
 ### caar, cadr, cdar, cddr
 ```
 >> (define numbers (cons (cons (quote 1) (quote 2)) (cons (quote 3) (quote 4))))
@@ -67,7 +67,7 @@
 >> (append (cons (quote a) (cons (quote b) nil)) (cons (quote c) (cons (quote d) (cons (quote e) nil))))
 => (a b c d e)
 ```
-### contain (if the list contatins the element)
+### contain (if the list contains the element)
 ```
 >> (define contain (lambda (l e) (cond ((eq l ()) nil)
                                        ((eq (car l) e) t)
