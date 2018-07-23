@@ -1,5 +1,5 @@
 # PLI
-PLI is a **Pure Lisp** interpreter written in Java. (This project is still a work in progress.)
+PLI is a **Pure Lisp** interpreter written in Java. (This project is still a work in progress. See [ToDos](#ToDos).)
 
 ## Getting Started
 1. Download the zip of this repository, and then unzip it. Or, clone the repository with the git command.
