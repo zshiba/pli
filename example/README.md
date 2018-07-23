@@ -220,3 +220,36 @@
 >> (find (quote somthing) pairs)
 => nil
 ```
+
+### update (a key-value pair in a list with the new value, if the pair matching the given key exists)
+```lisp
+>> (define update (lambda (k v l) (cond ((eq k ()) l)
+                                        ((eq l ()) l)
+                                        ((eq k (car (car l))) (cons (cons k (cons v ())) (cdr l)))
+                                        (t (cons (car l) (update k v (cdr l)))))))
+=> update
+
+>> (define pairs (quote ((k1 v1) (k2 v2) (k3 v3) (k4 v4) (k5 v5))))
+=> pairs
+
+>> pairs
+=> ((k1 v1) (k2 v2) (k3 v3) (k4 v4) (k5 v5))
+
+>> (update (quote k1) (quote vvv111) pairs)
+=> ((k1 vvv111) (k2 v2) (k3 v3) (k4 v4) (k5 v5))
+
+>> (update (quote k2) (quote vvv222) pairs)
+=> ((k1 v1) (k2 vvv222) (k3 v3) (k4 v4) (k5 v5))
+
+>> (update (quote k5) (quote vvv555) pairs)
+=> ((k1 v1) (k2 v2) (k3 v3) (k4 v4) (k5 vvv555))
+
+>> (update (quote something) (quote something) pairs)
+=> ((k1 v1) (k2 v2) (k3 v3) (k4 v4) (k5 v5))
+
+>> (define updated_pairs (update (quote k3) (quote vvv333) pairs))
+=> updated_pairs
+
+>> updated_pairs
+=> ((k1 v1) (k2 v2) (k3 vvv333) (k4 v4) (k5 v5))
+```
