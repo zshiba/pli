@@ -18,7 +18,7 @@ $ java PLI
 >> 
 ```
 5. The source can go across multiple lines. To indicate the end of the source, send a EOF (End Of File) control (Ctrl+D). See the "Limitation" section below for more details.
-```
+```lisp
 $ java PLI
 >> (quote a)
 (quote b)
@@ -30,7 +30,7 @@ $ java PLI
 
 ## Constant Literals and the Empty List
 ### t , nil, ()
-```
+```lisp
 >> t
 => t
 
@@ -42,7 +42,7 @@ $ java PLI
 ```
 ## Special Forms
 ### quote
-```
+```lisp
 >> (quote a)
 => a
 
@@ -50,7 +50,7 @@ $ java PLI
 => (a b c)
 ```
 ### define
-```
+```lisp
 >> a       
 ** eval error: Undefined: a
 
@@ -67,7 +67,7 @@ $ java PLI
 => a
 ```
 ### lambda
-```
+```lisp
 >> (lambda (x) x) 
 => (procedure)
 
@@ -75,7 +75,7 @@ $ java PLI
 => a
 ```
 ### cond
-```
+```lisp
 >> (cond (nil (quote a)) (t (quote b)))
 => b
 
@@ -87,7 +87,7 @@ $ java PLI
 
 ## Primitive functions
 ### eq
-```
+```lisp
 >> (eq t t)
 => t
 
@@ -110,7 +110,7 @@ $ java PLI
 => t
 ```
 ### atom
-```
+```lisp
 >> (atom t)
 => t
 
@@ -121,7 +121,7 @@ $ java PLI
 => t
 ```
 ### cons
-```
+```lisp
 >> (cons (quote a) (quote b))
 => (a . b)
 
@@ -144,7 +144,7 @@ $ java PLI
 => (a b c)
 ```
 ### car
-```
+```lisp
 >> (car (cons (quote a) (quote b)))
 => a
 
@@ -155,7 +155,7 @@ $ java PLI
 => (a . b)
 ```
 ### cdr
-```
+```lisp
 >> (cdr (cons (quote a) (quote b)))
 => b
 
