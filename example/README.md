@@ -1,7 +1,7 @@
 # (PLI) Pure Lisp Interpreter Examples
 
 ### caar, cadr, cdar, cddr
-```
+```lisp
 >> (define numbers (cons (cons (quote 1) (quote 2)) (cons (quote 3) (quote 4))))
 => numbers
 
@@ -38,8 +38,9 @@
 >> (cddr numbers)
 => 4
 ```
+
 ### reverse (a list by using an accumulator)
-```
+```lisp
 >> (define reverse (lambda (l a) (cond ((eq l nil) a) (t (reverse (cdr l) (cons (car l) a))))))
 => reverse
 
@@ -55,8 +56,9 @@
 >> (reverse (quote (a b c d e f g)) ())
 => (g f e d c b a)
 ```
+
 ### append (one list to another)
-```
+```lisp
 >> (define append (lambda (xs ys) (cond ((eq xs ()) ys)
                                         (t (cons (car xs) (append (cdr xs) ys))))))
 => append
@@ -67,8 +69,9 @@
 >> (append (cons (quote a) (cons (quote b) nil)) (cons (quote c) (cons (quote d) (cons (quote e) nil))))
 => (a b c d e)
 ```
+
 ### contain (if the list contains the element)
-```
+```lisp
 >> (define contain (lambda (l e) (cond ((eq l ()) nil)
                                        ((eq (car l) e) t)
                                        (t (contain (cdr l) e)))))
@@ -92,8 +95,9 @@
 >> (contain l (quote 7))
 => nil
 ```
+
 ### filter (elements in a list with a predicate)
-```
+```lisp
 >> (define filter (lambda (p l) (cond ((eq l ()) ())
                                       ((p (car l)) (cons (car l) (filter p (cdr l))))
                                       (t (filter p (cdr l))))))
@@ -118,8 +122,9 @@
 >> (filter pred (quote (1 2 3 4 5 6 7 8 9)))
 => (2 4 6 8)
 ```
+
 ### drop (elements in a list with a predicate)
-```
+```lisp
 >> (define drop (lambda (p l) (cond ((eq l ()) ())
                                     ((p (car l)) (drop p (cdr l)))
                                     (t (cons (car l) (drop p (cdr l)))))))
@@ -144,8 +149,9 @@
 >> (drop pred (quote (1 2 3 4 5 6 7 8 9)))
 => (1 3 5 7 9)
 ```
+
 ### zip (two lists into one)
-```
+```lisp
 >> (define zip (lambda (xs ys) (cond ((eq xs ()) ())
                                      ((eq ys ()) ())
                                      (t (cons (cons (car xs) (cons (car ys) nil)) (zip (cdr xs) (cdr ys)))))))
