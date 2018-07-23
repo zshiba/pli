@@ -197,7 +197,7 @@
 => (a b c)
 ```
 
-### find (the value associated with a key in a list of key-value pairs)
+### find (the value associated with the given key in a list of key-value pairs)
 ```lisp
 >> (define find (lambda (k l) (cond ((eq k ()) ())
                                     ((eq l ()) ())
@@ -221,7 +221,7 @@
 => nil
 ```
 
-### update (a key-value pair in a list with the new value, if the pair matching the given key exists)
+### update (the pair that matches the given key with the new value)
 ```lisp
 >> (define update (lambda (k v l) (cond ((eq k ()) l)
                                         ((eq l ()) l)
