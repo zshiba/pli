@@ -24,17 +24,25 @@ public class Procedure implements SExpression{
 
   @Override
   public boolean equals(Object object){
-    return false; //ToDo
+    if(object instanceof Procedure){
+      Procedure p = (Procedure)object;
+      if(this.parameters.equals(p.getParameters()) && this.body.equals(p.getBody()) && this.environment == p.getEnvironment())
+        return true;
+      else
+        return false;
+    }else{
+      return false;
+    }
   }
 
   @Override
   public String toString(){
-    return "(procedure)"; //ToDo
+    return "(procedure)";
   }
 
   @Override
   public String toFullString(){
-    return this.toString(); //ToDo
+    return this.toString();
   }
 
 }
