@@ -333,12 +333,9 @@ $ java PLI
 ```
 ## ToDos
 - [ ] Update Parser.java to accept dot notation form as input
-- [ ] Update Procedure.java (Impliment ToDos)
 - [ ] (Reconsider the abstraction. Is procedure s-expression?)
 - [ ] Find the definition of atom()
-- [ ] Add examples
-- [ ] Add test cases
-- [ ] Make error handlings robust
+- [ ] Make error handling robust
 - [ ] Refactor Evaluator.java
 
 ## Limitation
