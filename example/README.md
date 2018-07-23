@@ -14,7 +14,7 @@
 >> (define cadr (lambda (l) (car (cdr l))))
 => cadr
 
->> (define cdar (lambda (l) (cdr (car l))))    
+>> (define cdar (lambda (l) (cdr (car l))))
 => cdar
 
 >> (define cddr (lambda (l) (cdr (cdr l))))
@@ -171,4 +171,28 @@
 
 >> (zip (quote (a b)) (quote (1 2 3)))
 => ((a 1) (b 2))
+```
+
+### list (crests a list in which the send argument can be an atom)
+```lisp
+>> (define list (lambda (x y) (cons x (cons y ()))))
+=> list
+
+>> (list (quote a) (quote b))
+=> (a b)
+
+>> (list (quote a) ())
+=> (a nil)
+
+>> (list (quote a) (quote (b c)))
+=> (a (b c))
+
+>> (cons (quote a) (quote b))
+=> (a . b)
+
+>> (cons (quote a) ())
+=> (a)
+
+>> (cons (quote a) (quote (b c)))
+=> (a b c)
 ```
