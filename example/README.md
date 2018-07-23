@@ -196,3 +196,27 @@
 >> (cons (quote a) (quote (b c)))
 => (a b c)
 ```
+
+### find (the value associated with a key in a list of key-value pairs)
+```lisp
+>> (define find (lambda (k l) (cond ((eq k ()) ())
+                                    ((eq l ()) ())
+                                    ((eq k (car (car l))) (car (cdr (car l))))
+                                    (t (find k (cdr l))))))
+=> find
+
+>> (define pairs (quote ((k1 v1) (k2 v2) (k3 v3) (k4 v4) (k5 v5))))
+=> pairs
+
+>> pairs
+=> ((k1 v1) (k2 v2) (k3 v3) (k4 v4) (k5 v5))
+
+>> (find (quote k3) pairs)
+=> v3
+
+>> (find (quote k4) pairs)
+=> v4
+
+>> (find (quote somthing) pairs)
+=> nil
+```
