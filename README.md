@@ -185,14 +185,12 @@ $ java PLI
 ```
 
 ## ToDos
-- [ ] Update Parser.java to accept dot notation form as input
-- [ ] (Reconsider the abstraction. Is procedure s-expression?)
+- [ ] Reconsider the abstraction. Is procedure s-expression?
 - [ ] Make error handling robust
 - [ ] Refactor Evaluator.java
 
 ## Limitation
 - To indicate the end of the source with stdin, it is necessary to enter a newline character (hit the enter key) at the end of the source and then send a EOF control (Ctrl+D).
-- Currently, input source must be written as the list notation form, (not the dot notation form).
 
 ## Development Environment
 Mac, JDK 1.8

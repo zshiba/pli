@@ -4,19 +4,25 @@ public class Parser{
 
   public static class ParseErrorException extends Exception{
 
-    private boolean isOfCloseParenthesis;
+    public static enum Type{
+      NORMAL,
+      CLOSE_PARENTHESIS,
+      DOT
+    }
+
+    private Type type;
 
     public ParseErrorException(String message){
-      this(message, false);
+      this(message, Type.NORMAL);
     }
 
-    public ParseErrorException(String message, boolean isOfCloseParenthesis){
+    public ParseErrorException(String message, Type type){
       super("parse error: " + message);
-      this.isOfCloseParenthesis = isOfCloseParenthesis;
+      this.type = type;
     }
 
-    public boolean isOfCloseParenthesis(){
-      return this.isOfCloseParenthesis;
+    public Type getType(){
+      return this.type;
     }
 
   }
@@ -36,7 +42,7 @@ public class Parser{
         try{
           car = this.build();
         }catch(ParseErrorException e){
-          if(e.isOfCloseParenthesis()) //ad-hoc
+          if(e.getType() == ParseErrorException.Type.CLOSE_PARENTHESIS)
             return new List(); //empty list
           else
             throw e;
@@ -47,23 +53,30 @@ public class Parser{
           SExpression cdr;
           try{
             cdr = this.build();
-          }catch(ParseErrorException e){ //ad-hoc
-            if(e.isOfCloseParenthesis())
+          }catch(ParseErrorException e){
+            if(e.getType() == ParseErrorException.Type.CLOSE_PARENTHESIS){
               return root;
-            else
+            }else if(e.getType() == ParseErrorException.Type.DOT){
+              cdr = this.build();
+              leaf.cdr(cdr);
+              if(this.lexer.hasToken() && this.lexer.consumeNextToken().getType() == Token.Type.CLOSE_PARENTHESIS)
+                return root;
+              else
+                break;
+            }else{
               throw e;
+            }
           }
           leaf.cdr(new List(cdr));
           leaf = (List)leaf.cdr(); //ad-hoc (safe cast only within this context)
         }
         throw new ParseErrorException("(missing ')')");
       }else if(type == Token.Type.CLOSE_PARENTHESIS){
-        throw new ParseErrorException("(unexpected ')')", true);
+        throw new ParseErrorException("(unexpected ')')", ParseErrorException.Type.CLOSE_PARENTHESIS);
       }else if(type == Token.Type.SYMBOL){
         return new Atom(token.getLiteral());
       }else{
-        //ToDo (Token.Type.DOT)
-        throw new ParseErrorException("(unknown token)");
+        throw new ParseErrorException("(unexpected '.')", ParseErrorException.Type.DOT);
       }
     }else{
       throw new ParseErrorException("(no token left)");
