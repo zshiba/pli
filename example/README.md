@@ -173,7 +173,7 @@
 => ((a 1) (b 2))
 ```
 
-### list (crests a list in which the send argument can be an atom)
+### list (crests a list in which the 2nd argument can be an atom)
 ```lisp
 >> (define list (lambda (x y) (cons x (cons y ()))))
 => list
