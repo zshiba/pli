@@ -308,3 +308,31 @@
 >> (and (pred1 (quote a)) (pred2 (quote b)))
 => nil
 ```
+
+### not
+```lisp
+>> (define not (lambda (p) (cond (p nil)
+                                 (t t))))
+=> not
+
+>> (not t)
+=> nil
+
+>> (not nil)
+=> t
+
+>> (not ())
+=> t
+
+>> (not (quote a))
+=> t
+
+>> (not (eq (quote a) (quote a)))
+=> nil
+
+>> (not (atom (quote a)))
+=> nil
+
+>> (not (atom (quote (a b))))
+=> t
+```
