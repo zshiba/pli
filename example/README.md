@@ -254,7 +254,7 @@
 => ((k1 v1) (k2 v2) (k3 vvv333) (k4 v4) (k5 v5))
 ```
 
-### null (if the given expression is nil)
+### null
 ```lisp
 >> (define null (lambda (e) (eq e nil)))
 => null
@@ -273,4 +273,38 @@
 
 >> (null ((lambda (x) x) ()))
 => t
+```
+
+### and
+```lisp
+>> (define and (lambda (p1 p2) (cond (p1 (cond (p2 t)
+                                               (t nil)))
+                                     (t nil))))
+=> and
+
+>> (and t t)
+=> t
+
+>> (and t nil)
+=> nil
+
+>> (and () t)
+=> nil
+
+>> (and ((lambda (x) (eq x (quote a))) (quote a))
+        ((lambda (x) (eq x (quote b))) (quote b)))
+=> t
+
+>> (define pred1 (lambda (x) (atom x)))
+=> pred1
+
+>> (define pred2 (lambda (x) (cond ((atom x) nil)
+                                   (t t))))
+=> pred2
+
+>> (and (pred1 (quote a)) (pred2 (quote (b c))))
+=> t
+
+>> (and (pred1 (quote a)) (pred2 (quote b)))
+=> nil
 ```
