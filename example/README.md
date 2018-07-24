@@ -253,3 +253,24 @@
 >> updated_pairs
 => ((k1 v1) (k2 v2) (k3 vvv333) (k4 v4) (k5 v5))
 ```
+
+### null (if the given expression is nil)
+```lisp
+>> (define null (lambda (e) (eq e nil)))
+=> null
+
+>> (null nil)
+=> t
+
+>> (null ())
+=> t
+
+>> (null t)
+=> nil
+
+>> (null (quote a))
+=> nil
+
+>> (null ((lambda (x) x) ()))
+=> t
+```
