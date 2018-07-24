@@ -173,7 +173,7 @@
 => ((a 1) (b 2))
 ```
 
-### list (crests a list in which the send argument can be an atom)
+### list (crests a list in which the 2nd argument can be an atom)
 ```lisp
 >> (define list (lambda (x y) (cons x (cons y ()))))
 => list
@@ -252,4 +252,87 @@
 
 >> updated_pairs
 => ((k1 v1) (k2 v2) (k3 vvv333) (k4 v4) (k5 v5))
+```
+
+### null
+```lisp
+>> (define null (lambda (e) (eq e nil)))
+=> null
+
+>> (null nil)
+=> t
+
+>> (null ())
+=> t
+
+>> (null t)
+=> nil
+
+>> (null (quote a))
+=> nil
+
+>> (null ((lambda (x) x) ()))
+=> t
+```
+
+### and
+```lisp
+>> (define and (lambda (p1 p2) (cond (p1 (cond (p2 t)
+                                               (t nil)))
+                                     (t nil))))
+=> and
+
+>> (and t t)
+=> t
+
+>> (and t nil)
+=> nil
+
+>> (and () t)
+=> nil
+
+>> (and ((lambda (x) (eq x (quote a))) (quote a))
+        ((lambda (x) (eq x (quote b))) (quote b)))
+=> t
+
+>> (define pred1 (lambda (x) (atom x)))
+=> pred1
+
+>> (define pred2 (lambda (x) (cond ((atom x) nil)
+                                   (t t))))
+=> pred2
+
+>> (and (pred1 (quote a)) (pred2 (quote (b c))))
+=> t
+
+>> (and (pred1 (quote a)) (pred2 (quote b)))
+=> nil
+```
+
+### not
+```lisp
+>> (define not (lambda (p) (cond (p nil)
+                                 (t t))))
+=> not
+
+>> (not t)
+=> nil
+
+>> (not nil)
+=> t
+
+>> (not ())
+=> t
+
+>> (not (quote a))
+=> t
+
+>> (not (eq (quote a) (quote a)))
+=> nil
+
+>> (not (atom (quote a)))
+=> nil
+
+>> (not (atom (quote (a b))))
+=> t
 ```
