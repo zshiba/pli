@@ -119,6 +119,24 @@ $ java PLI
 
 >> (atom ())
 => t
+
+>> (atom a)
+** eval error: Undefined: a
+
+>> (atom (quote a))
+=> t
+
+>> (atom (quote ()))
+=> t
+
+>> (atom (cons (quote a) (quote b)))
+=> nil
+
+>> (atom (quote (a b)))
+=> nil
+
+>> (atom (cons (quote a) (cons (quote b) ())))
+=> nil
 ```
 ### cons
 ```lisp
@@ -169,7 +187,6 @@ $ java PLI
 ## ToDos
 - [ ] Update Parser.java to accept dot notation form as input
 - [ ] (Reconsider the abstraction. Is procedure s-expression?)
-- [ ] Find the definition of atom()
 - [ ] Make error handling robust
 - [ ] Refactor Evaluator.java
 

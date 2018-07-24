@@ -179,13 +179,11 @@ public class Evaluator{
       SExpression car = list.car();
       SExpression cdr = list.cdr();
       if(cdr == Atom.NIL){
-        if(car instanceof Atom){
-          if(environment.find((Atom)car) != null)
-            return Atom.TRUE;
-          else
-            throw new EvaluationErrorException("Invalid expression: " + car.toFullString());
-        }else if(car instanceof List){
-          if(((List)car).isEmpty())
+        SExpression e = this.evaluate(car, environment);
+        if(e instanceof Atom){
+          return Atom.TRUE;
+        }else if(e instanceof List){
+          if(((List)e).isEmpty())
             return Atom.TRUE;
           else
             return Atom.NIL;
