@@ -307,7 +307,7 @@ public class Evaluator{
         Environment local = new Environment(env);
         SExpression p = parameters;
         SExpression a = arguments;
-        while(p != Atom.NIL && a != Atom.NIL){
+        while(p != Atom.NIL || a != Atom.NIL){
           SExpression parameter = ((List)p).car();
           SExpression arg = ((List)a).car();
           local.bind((Atom)parameter, arg);
