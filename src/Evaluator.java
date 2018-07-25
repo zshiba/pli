@@ -307,13 +307,17 @@ public class Evaluator{
         Environment local = new Environment(env);
         SExpression p = parameters;
         SExpression a = arguments;
-        while(p != Atom.NIL || a != Atom.NIL){
+        while(p != Atom.NIL && a != Atom.NIL){
           SExpression parameter = ((List)p).car();
           SExpression arg = ((List)a).car();
           local.bind((Atom)parameter, arg);
           p = ((List)p).cdr();
           a = ((List)a).cdr();
         }
+        if(p != Atom.NIL) //error: when the size of parameters and of arguments were not the same
+          throw new EvaluationErrorException("Invalid expression: " + p.toFullString());
+        if(a != Atom.NIL)
+          throw new EvaluationErrorException("Invalid expression: " + a.toFullString());
 
         //evaluate body with the new local environment
         SExpression value = null;
