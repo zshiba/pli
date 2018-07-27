@@ -336,3 +336,83 @@
 >> (not (atom (quote (a b))))
 => t
 ```
+
+### map (applies the lambda to each element of the list)
+```lisp
+>> (define map (lambda (f l) (cond ((eq l ()) ())
+                             (t (cons (f (car l)) (map f (cdr l)))))))
+=> map
+
+>> (map (lambda (e) (atom e)) (quote (1 2 3)))
+=> (t t t)
+
+>> (map (lambda (e) (atom e)) (quote (1 (2) 3)))
+=> (t nil t)
+
+>> (map (lambda (e) (car e)) (quote ((a . 1) (b . 2) (c . 3))))
+=> (a b c)
+
+>> (define wrap (lambda (e) (cons e ())))
+=> wrap
+
+>> (map wrap (quote (a b c d e)))
+=> ((a) (b) (c) (d) (e))
+
+>> (map wrap (quote ((a . b) c (d . e) f)))
+=> (((a . b)) (c) ((d . e)) (f))
+```
+
+### intersection (of two sets)
+```lisp
+>> (define contain
+           (lambda (l e) (cond ((eq l ()) nil)
+                               ((eq (car l) e) t)
+                               (t (contain (cdr l) e)))))
+=> contain
+
+>> (define intersection
+           (lambda (s1 s2) (cond ((eq s1 ()) ())
+                                 ((eq s2 ()) ())
+                                 ((contain s2 (car s1)) (cons (car s1) (intersection (cdr s1) s2)))
+                                 (t (intersection (cdr s1) s2)))))
+=> intersection
+
+>> (intersection (quote (1 2 3)) (quote (2 3 4)))
+=> (2 3)
+
+>> (intersection (quote (1 3 5 7 9)) (quote (0 2 4 6 8)))
+=> nil
+
+>> (intersection (quote ((a . 1) (b . 1) (c . 1))) (quote ((a . 1) (b . 2) (c . 1) (d . 1))))
+=> ((a . 1) (c . 1))
+```
+
+### union (of two sets)
+```lisp
+>> (define not
+           (lambda (p) (cond (p nil)
+                             (t t))))
+=> not
+
+>> (define contain
+           (lambda (l e) (cond ((eq l ()) nil)
+                               ((eq (car l) e) t)
+                               (t (contain (cdr l) e)))))
+=> contain
+
+>> (define union
+           (lambda (s1 s2) (cond ((eq s1 ()) s2)
+                                 ((eq s2 ()) s1)
+                                 ((not (contain s2 (car s1))) (cons (car s1) (union (cdr s1) s2)))
+                                 (t (union (cdr s1) s2)))))
+=> union
+
+>> (union (quote (1 2 3)) (quote (2 3 4)))
+=> (1 2 3 4)
+
+>> (union (quote (1 3 5 7 9)) (quote (0 2 4 6 8)))
+=> (1 3 5 7 9 0 2 4 6 8)
+
+>> (union (quote ((a . 1) (b . 1) (c . 1))) (quote ((a . 1) (b . 2) (c . 1) (d . 1))))
+=> ((b . 1) (a . 1) (b . 2) (c . 1) (d . 1))
+```
