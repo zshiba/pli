@@ -336,3 +336,28 @@
 >> (not (atom (quote (a b))))
 => t
 ```
+
+### map (applies the lambda to each element of the list)
+```lisp
+>> (define map (lambda (f l) (cond ((eq l ()) ())
+                             (t (cons (f (car l)) (map f (cdr l)))))))
+=> map
+
+>> (map (lambda (e) (atom e)) (quote (1 2 3)))
+=> (t t t)
+
+>> (map (lambda (e) (atom e)) (quote (1 (2) 3)))
+=> (t nil t)
+
+>> (map (lambda (e) (car e)) (quote ((a . 1) (b . 2) (c . 3))))
+=> (a b c)
+
+>> (define wrap (lambda (e) (cons e ())))
+=> wrap
+
+>> (map wrap (quote (a b c d e)))
+=> ((a) (b) (c) (d) (e))
+
+>> (map wrap (quote ((a . b) c (d . e) f)))
+=> (((a . b)) (c) ((d . e)) (f))
+```
