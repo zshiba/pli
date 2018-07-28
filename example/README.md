@@ -420,8 +420,8 @@
 ### unique
 ```lisp
 >> (define contain (lambda (l e) (cond ((eq l ()) nil)
-                                 ((eq (car l) e) t)
-                                 (t (contain (cdr l) e)))))
+                                       ((eq (car l) e) t)
+                                       (t (contain (cdr l) e)))))
 => contain
 
 >> (define unique (lambda (l) (cond ((eq l ()) ())

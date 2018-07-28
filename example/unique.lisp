@@ -1,6 +1,6 @@
 (define contain (lambda (l e) (cond ((eq l ()) nil)
-                              ((eq (car l) e) t)
-                              (t (contain (cdr l) e)))))
+                                    ((eq (car l) e) t)
+                                    (t (contain (cdr l) e)))))
 
 (define unique (lambda (l) (cond ((eq l ()) ())
                                  ((contain (cdr l) (car l)) (unique (cdr l)))
@@ -15,3 +15,4 @@
 (unique (quote ()))
 
 (unique (quote (a b c d e)))
+x
