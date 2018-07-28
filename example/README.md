@@ -460,3 +460,47 @@
 >> (duplicate (quote ()))
 => nil
 ```
+
+### compose (two lambdas, f(g(x)))
+```lisp
+>> (define compose (lambda (f g) (lambda (x) (f (g x)))))
+=> compose
+
+>> (define reverse_a (lambda (l a) (cond ((eq l nil) a)
+                                         (t (reverse_a (cdr l) (cons (car l) a))))))
+=> reverse_a
+
+>> (define reverse (lambda (l) (reverse_a l ())))
+=> reverse
+
+>> (define contain (lambda (l e) (cond ((eq l ()) nil)
+                                       ((eq (car l) e) t)
+                                       (t (contain (cdr l) e)))))
+=> contain
+
+>> (define unique (lambda (l) (cond ((eq l ()) ())
+                                    ((contain (cdr l) (car l)) (unique (cdr l)))
+                                    (t (cons (car l) (unique (cdr l)))))))
+=> unique
+
+>> (compose reverse unique)
+=> (procedure)
+
+>> (compose unique reverse)
+=> (procedure)
+
+>> (define l (quote (1 2 2 3 3 3 4 4 4 4 5 5 5 5 5)))
+=> l
+
+>> (unique l)
+=> (1 2 3 4 5)
+
+>> (reverse l)
+=> (5 5 5 5 5 4 4 4 4 3 3 3 2 2 1)
+
+>> ((compose reverse unique) l)
+=> (5 4 3 2 1)
+
+>> ((compose unique reverse) l)
+=> (5 4 3 2 1)
+```
