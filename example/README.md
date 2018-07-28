@@ -416,3 +416,91 @@
 >> (union (quote ((a . 1) (b . 1) (c . 1))) (quote ((a . 1) (b . 2) (c . 1) (d . 1))))
 => ((b . 1) (a . 1) (b . 2) (c . 1) (d . 1))
 ```
+
+### unique
+```lisp
+>> (define contain (lambda (l e) (cond ((eq l ()) nil)
+                                       ((eq (car l) e) t)
+                                       (t (contain (cdr l) e)))))
+=> contain
+
+>> (define unique (lambda (l) (cond ((eq l ()) ())
+                                    ((contain (cdr l) (car l)) (unique (cdr l)))
+                                    (t (cons (car l) (unique (cdr l)))))))
+=> unique
+
+>> (unique (quote (1 2 3 1 2 3)))
+=> (1 2 3)
+
+>> (unique (quote (a 1 b 2 c 3 a b c)))
+=> (1 2 3 a b c)
+
+>> (unique (quote ((a . 1) (b . 2) (c . 3) (b . 2))))
+=> ((a . 1) (c . 3) (b . 2))
+
+>> (unique (quote ()))
+=> nil
+
+>> (unique (quote (a b c d e)))
+=> (a b c d e)
+```
+
+### duplicate
+```lisp
+>> (define duplicate (lambda (l) (cond ((eq l ()) ())
+                                       (t (cons (car l) (cons (car l) (duplicate (cdr l))))))))
+=> duplicate
+
+>> (duplicate (quote (a b c d e)))
+=> (a a b b c c d d e e)
+
+>> (duplicate (quote ((a) (b) (c))))
+=> ((a) (a) (b) (b) (c) (c))
+
+>> (duplicate (quote ()))
+=> nil
+```
+
+### compose (two lambdas, f(g(x)))
+```lisp
+>> (define compose (lambda (f g) (lambda (x) (f (g x)))))
+=> compose
+
+>> (define reverse_a (lambda (l a) (cond ((eq l nil) a)
+                                         (t (reverse_a (cdr l) (cons (car l) a))))))
+=> reverse_a
+
+>> (define reverse (lambda (l) (reverse_a l ())))
+=> reverse
+
+>> (define contain (lambda (l e) (cond ((eq l ()) nil)
+                                       ((eq (car l) e) t)
+                                       (t (contain (cdr l) e)))))
+=> contain
+
+>> (define unique (lambda (l) (cond ((eq l ()) ())
+                                    ((contain (cdr l) (car l)) (unique (cdr l)))
+                                    (t (cons (car l) (unique (cdr l)))))))
+=> unique
+
+>> (compose reverse unique)
+=> (procedure)
+
+>> (compose unique reverse)
+=> (procedure)
+
+>> (define l (quote (1 2 2 3 3 3 4 4 4 4 5 5 5 5 5)))
+=> l
+
+>> (unique l)
+=> (1 2 3 4 5)
+
+>> (reverse l)
+=> (5 5 5 5 5 4 4 4 4 3 3 3 2 2 1)
+
+>> ((compose reverse unique) l)
+=> (5 4 3 2 1)
+
+>> ((compose unique reverse) l)
+=> (5 4 3 2 1)
+```
