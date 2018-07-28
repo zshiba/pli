@@ -444,3 +444,19 @@
 >> (unique (quote (a b c d e)))
 => (a b c d e)
 ```
+
+### duplicate
+```lisp
+>> (define duplicate (lambda (l) (cond ((eq l ()) ())
+                                       (t (cons (car l) (cons (car l) (duplicate (cdr l))))))))
+=> duplicate
+
+>> (duplicate (quote (a b c d e)))
+=> (a a b b c c d d e e)
+
+>> (duplicate (quote ((a) (b) (c))))
+=> ((a) (a) (b) (b) (c) (c))
+
+>> (duplicate (quote ()))
+=> nil
+```
