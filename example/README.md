@@ -457,6 +457,78 @@
 => ((b . 1) (a . 1) (b . 2) (c . 1) (d . 1))
 ```
 
+### set-difference (of two sets returns a set that consists of elements in s1 but not in s2)
+```lisp
+>> (define contain
+           (lambda (l e) (cond ((eq l ()) nil)
+                               ((eq (car l) e) t)
+                               (t (contain (cdr l) e)))))
+=> contain
+
+>> (define set-difference
+           (lambda (s1 s2) (cond ((eq s1 ()) ())
+                                 ((contain s2 (car s1)) (set-difference (cdr s1) s2))
+                                 (t (cons (car s1) (set-difference (cdr s1) s2))))))
+=> set-difference
+
+>> (set-difference (quote ()) (quote ()))
+=> nil
+
+>> (set-difference (quote (1 2 3)) (quote (2 3 4)))
+=> (1)
+
+>> (set-difference (quote (1 3 5 7 9)) (quote (0 2 4 6 8)))
+=> (1 3 5 7 9)
+
+>> (set-difference (quote ((a . 1) (b . 1) (c . 1))) (quote ((a . 1) (b . 2) (c . 1) (d . 1))))
+=> ((b . 1))
+
+>> (set-difference (quote (a b)) (quote ()))
+=> (a b)
+
+>> (set-difference (quote ()) (quote (a b)))
+=> nil
+```
+
+### symmetric-difference (of two sets returns a set that consists of elements each of which is only in s1 or is only in s2)
+```lisp
+>> (define contain
+           (lambda (l e) (cond ((eq l ()) nil)
+                               ((eq (car l) e) t)
+                               (t (contain (cdr l) e)))))
+=> contain
+
+>> (define symmetric-difference_r
+           (lambda (s1 s2 h1 h2 a) (cond ((eq s1 ()) (cond ((eq s2 ()) a)
+                                                           (t (cond ((contain h1 (car s2)) (symmetric-difference_r s1 (cdr s2) h1 h2 a))
+                                                                    (t (symmetric-difference_r s1 (cdr s2) h1 h2 (cons (car s2) a)))))))
+                                         (t (cond ((contain h2 (car s1)) (symmetric-difference_r (cdr s1) s2 h1 h2 a))
+                                                  (t (symmetric-difference_r (cdr s1) s2 h1 h2 (cons (car s1) a))))))))
+=> symmetric-difference_r
+
+>> (define symmetric-difference
+           (lambda (s1 s2) (symmetric-difference_r s1 s2 s1 s2 ())))
+=> symmetric-difference
+
+>> (symmetric-difference (quote ()) (quote ()))
+=> nil
+
+>> (symmetric-difference (quote (1 2 3)) (quote (2 3 4)))
+=> (4 1)
+
+>> (symmetric-difference (quote (1 3 5 7 9)) (quote (0 2 4 6 8)))
+=> (8 6 4 2 0 9 7 5 3 1)
+
+>> (symmetric-difference (quote ((a . 1) (b . 1) (c . 1))) (quote ((a . 1) (b . 2) (c . 1) (d . 1))))
+=> ((d . 1) (b . 2) (b . 1))
+
+>> (symmetric-difference (quote (a b)) (quote ()))
+=> (b a)
+
+>> (symmetric-difference (quote ()) (quote (a b)))
+=> (b a)
+```
+
 ### unique
 ```lisp
 >> (define contain (lambda (l e) (cond ((eq l ()) nil)
@@ -543,4 +615,16 @@
 
 >> ((compose unique reverse) l)
 => (5 4 3 2 1)
+```
+
+### Accessing values bounded to the outermost environment in a lambda
+```lisp
+>> (define a (quote a))
+=> a
+
+>> (define b (quote b))
+=> b
+
+>> ((lambda (x) (cons x (cons a (cons b nil)))) (quote x))
+=> (x a b)
 ```
