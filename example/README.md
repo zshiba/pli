@@ -544,3 +544,15 @@
 >> ((compose unique reverse) l)
 => (5 4 3 2 1)
 ```
+
+### Accessing values bounded to the outermost environment in a lambda
+```lisp
+>> (define a (quote a))
+=> a
+
+>> (define b (quote b))
+=> b
+
+>> ((lambda (x) (cons x (cons a (cons b nil)))) (quote x))
+=> (x a b)
+```
