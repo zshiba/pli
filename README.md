@@ -185,7 +185,8 @@ $ java PLI
 ```
 
 ## ToDos
-- [ ] Reconsider the abstraction. Is procedure s-expression?
+- [ ] Reconsider abstraction. Represent Proceduere with list form (s-expression).
+- [ ] Reconsider abstraction. Represent Environment with list form (s-expression).
 - [ ] Make error handling robust
 - [ ] Refactor Evaluator.java
 
