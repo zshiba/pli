@@ -457,6 +457,39 @@
 => ((b . 1) (a . 1) (b . 2) (c . 1) (d . 1))
 ```
 
+### set-difference (of two sets returns a set that consists of elements in s1 but not in s2)
+```lisp
+>> (define contain
+           (lambda (l e) (cond ((eq l ()) nil)
+                               ((eq (car l) e) t)
+                               (t (contain (cdr l) e)))))
+=> contain
+
+>> (define set-difference
+           (lambda (s1 s2) (cond ((eq s1 ()) ())
+                                 ((contain s2 (car s1)) (set-difference (cdr s1) s2))
+                                 (t (cons (car s1) (set-difference (cdr s1) s2))))))
+=> set-difference
+
+>> (set-difference (quote ()) (quote ()))
+=> nil
+
+>> (set-difference (quote (1 2 3)) (quote (2 3 4)))
+=> (1)
+
+>> (set-difference (quote (1 3 5 7 9)) (quote (0 2 4 6 8)))
+=> (1 3 5 7 9)
+
+>> (set-difference (quote ((a . 1) (b . 1) (c . 1))) (quote ((a . 1) (b . 2) (c . 1) (d . 1))))
+=> ((b . 1))
+
+>> (set-difference (quote (a b)) (quote ()))
+=> (a b)
+
+>> (set-difference (quote ()) (quote (a b)))
+=> nil
+```
+
 ### unique
 ```lisp
 >> (define contain (lambda (l e) (cond ((eq l ()) nil)
