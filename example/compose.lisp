@@ -13,6 +13,9 @@
                                  ((contain (cdr l) (car l)) (unique (cdr l)))
                                  (t (cons (car l) (unique (cdr l)))))))
 
+(define duplicate (lambda (l) (cond ((eq l ()) ())
+                                    (t (cons (car l) (cons (car l) (duplicate (cdr l))))))))
+
 (compose reverse unique)
 
 (compose unique reverse)
@@ -23,6 +26,16 @@
 
 (reverse l)
 
+(duplicate l)
+
 ((compose reverse unique) l)
 
 ((compose unique reverse) l)
+
+((compose reverse duplicate) l)
+
+((compose duplicate reverse) l)
+
+(define complicated (compose duplicate (compose reverse unique)))
+
+(complicated l)
