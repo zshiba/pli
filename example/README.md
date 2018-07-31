@@ -595,6 +595,10 @@
                                     (t (cons (car l) (unique (cdr l)))))))
 => unique
 
+>> (define duplicate (lambda (l) (cond ((eq l ()) ())
+                                       (t (cons (car l) (cons (car l) (duplicate (cdr l))))))))
+=> duplicate
+
 >> (compose reverse unique)
 => (procedure)
 
@@ -610,11 +614,26 @@
 >> (reverse l)
 => (5 5 5 5 5 4 4 4 4 3 3 3 2 2 1)
 
+>> (duplicate l)
+=> (1 1 2 2 2 2 3 3 3 3 3 3 4 4 4 4 4 4 4 4 5 5 5 5 5 5 5 5 5 5)
+
 >> ((compose reverse unique) l)
 => (5 4 3 2 1)
 
 >> ((compose unique reverse) l)
 => (5 4 3 2 1)
+
+>> ((compose reverse duplicate) l)
+=> (5 5 5 5 5 5 5 5 5 5 4 4 4 4 4 4 4 4 3 3 3 3 3 3 2 2 2 2 1 1)
+
+>> ((compose duplicate reverse) l)
+=> (5 5 5 5 5 5 5 5 5 5 4 4 4 4 4 4 4 4 3 3 3 3 3 3 2 2 2 2 1 1)
+
+>> (define complicated (compose duplicate (compose reverse unique)))
+=> complicated
+
+>> (complicated l)
+=> (5 5 4 4 3 3 2 2 1 1)
 ```
 
 ### Accessing values bounded to the outermost environment in a lambda
