@@ -95,16 +95,18 @@ public class Evaluator{
       SExpression car = list.car();
       SExpression cdr = list.cdr();
       if(car instanceof List){
-        List argument = (List)car;
-        while(true){
-          if((argument.car() instanceof Atom) && (argument.cdr() == Atom.NIL))
-            break;
-          else if(!(argument.car() instanceof Atom))
-            throw new EvaluationErrorException("Invalid expression: " + argument.car().toFullString());
-          else if(!(argument.cdr() instanceof List))
-            throw new EvaluationErrorException("Invalid expression: " + argument.cdr().toFullString());
-          else
-            argument = (List)argument.cdr();
+        if(!((List)car).isEmpty()){
+          List argument = (List)car;
+          while(true){
+            if((argument.car() instanceof Atom) && (argument.cdr() == Atom.NIL))
+              break;
+            else if(!(argument.car() instanceof Atom))
+              throw new EvaluationErrorException("Invalid expression: " + argument.car().toFullString());
+            else if(!(argument.cdr() instanceof List))
+              throw new EvaluationErrorException("Invalid expression: " + argument.cdr().toFullString());
+            else
+              argument = (List)argument.cdr();
+          }
         }
         return new Procedure(car, cdr, environment);
       }else{
@@ -307,18 +309,26 @@ public class Evaluator{
         Environment local = new Environment(env);
         SExpression p = parameters;
         SExpression a = arguments;
-        while(p != Atom.NIL && a != Atom.NIL){
-          SExpression parameter = ((List)p).car();
-          SExpression arg = ((List)a).car();
-          local.bind((Atom)parameter, arg);
-          p = ((List)p).cdr();
-          a = ((List)a).cdr();
+        if(p instanceof List && ((List)p).isEmpty()){
+          if(a != null)
+            throw new EvaluationErrorException("Invalid expression: " + a.toFullString());
+        }else{
+          if(a == null){
+            throw new EvaluationErrorException("Invalid expression: no arguments");
+          }else{
+            while(p != Atom.NIL && a != Atom.NIL){
+              SExpression parameter = ((List)p).car();
+              SExpression arg = ((List)a).car();
+              local.bind((Atom)parameter, arg);
+              p = ((List)p).cdr();
+              a = ((List)a).cdr();
+            }
+          if(p != Atom.NIL) //error: when the size of parameters and of arguments were not the same
+            throw new EvaluationErrorException("Invalid expression: " + p.toFullString());
+          if(a != Atom.NIL)
+            throw new EvaluationErrorException("Invalid expression: " + a.toFullString());
+          }
         }
-        if(p != Atom.NIL) //error: when the size of parameters and of arguments were not the same
-          throw new EvaluationErrorException("Invalid expression: " + p.toFullString());
-        if(a != Atom.NIL)
-          throw new EvaluationErrorException("Invalid expression: " + a.toFullString());
-
         //evaluate body with the new local environment
         SExpression value = null;
         SExpression b = body;

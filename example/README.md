@@ -647,3 +647,29 @@
 >> ((lambda (x) (cons x (cons a (cons b nil)))) (quote x))
 => (x a b)
 ```
+
+### Continuation Passing Style (CPS)
+```lisp
+>> (define c (lambda (l pred succ fail) (cond ((eq l ()) (fail))
+                                              ((pred (car l)) (succ (car l)))
+                                              (t (c (cdr l) pred succ fail)))))
+=> c
+
+>> (define find (lambda (l e) (c l
+                                 (lambda (x) (eq (car x) e))
+                                 (lambda (x) (cdr x))
+                                 (lambda () (quote not_found)))))
+=> find
+
+>> (find (quote ((a . 1) (b . 2) (c . 3))) (quote a))
+=> 1
+
+>> (find (quote ((a . 1) (b . 2) (c . 3))) (quote b))
+=> 2
+
+>> (find (quote ((a . 1) (b . 2) (c . 3))) (quote c))
+=> 3
+
+>> (find (quote ((a . 1) (b . 2) (c . 3))) (quote something))
+=> not_found
+```
