@@ -187,7 +187,7 @@ $ java PLI
 ## ToDos
 - [ ] Reconsider abstraction. Represent Proceduere with list form (s-expression).
 - [ ] Reconsider abstraction. Represent Environment with list form (s-expression).
-- [ ] Find the definition of eq. (Currently, two s-expressions are compared with their structures, not with values obtained by evaluating the s-expression.)
+- [ ] Find the definition of eq. (Currently, two s-expressions are compared based on their structures, not values obtained by evaluating the s-expression.)
 - [ ] Make error handling robust
 - [ ] Refactor Evaluator.java
 
